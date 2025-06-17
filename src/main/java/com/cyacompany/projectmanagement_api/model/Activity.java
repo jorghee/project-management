@@ -1,0 +1,37 @@
+package com.cyacompany.projectmanagement_api.model;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+@Entity
+@Table(name = "G1M_ACTIVIDAD")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class Activity {
+
+  @Id
+  @Column(name = "ActCod")
+  private Integer id;
+
+  @ManyToOne
+  @JoinColumn(name = "EtaCod", nullable = false)
+  private Stage stage;
+
+  @ManyToOne
+  @JoinColumn(name = "EmpCod", nullable = false)
+  private Employee responsible;
+
+  @Column(name = "ActNom", length = 100, nullable = false)
+  private String name;
+
+  @Column(name = "ActTieEst")
+  private Integer estimatedTime;
+
+  @Column(name = "ActTieReal")
+  private Integer realTime;
+
+  @Column(name = "EstReg", length = 1, nullable = false)
+  private String status;
+}
