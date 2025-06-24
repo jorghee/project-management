@@ -2,20 +2,30 @@ import { useEffect, useState } from 'react';
 import CatalogForm from './CatalogForm';
 import CatalogTable from './CatalogTable';
 
-export default function CatalogManager({ title, endpoint, idKey, descriptionKey }) {
+export default function CatalogManager({ title, endpoint, columns }) {
+  
+  const createInitialFormData = () => {
+    const initialData = {};
+    columns.forEach(col => {
+      initialData[col.key] = col.key === 'status' ? 'A' : '';
+    });
+    return initialData;
+  };
+
   const [records, setRecords] = useState([]);
-  const [formData, setFormData] = useState({ [idKey]: '', [descriptionKey]: '', status: 'A' });
+  const [formData, setFormData] = useState(createInitialFormData());
   const [flag, setFlag] = useState(0);
   const [action, setAction] = useState(null);
 
   useEffect(() => {
     fetch(endpoint)
       .then(res => res.json())
-      .then(data => setRecords(data));
+      .then(data => setRecords(data))
+      .catch(err => console.error(`Error fetching data from ${endpoint}:`, err));
   }, [endpoint]);
 
   const resetForm = () => {
-    setFormData({ [idKey]: '', [descriptionKey]: '', status: 'A' });
+    setFormData(createInitialFormData());
     setFlag(0);
     setAction(null);
   };
@@ -40,8 +50,10 @@ export default function CatalogManager({ title, endpoint, idKey, descriptionKey 
     } else if (cmd === 'cancel') {
       resetForm();
     } else if (cmd === 'update' && flag === 1) {
+      const idKey = columns.length > 0 ? columns[0].key : 'id';
       const method = action === 'add' ? 'POST' : 'PUT';
       const url = action === 'add' ? endpoint : `${endpoint}/${formData[idKey]}`;
+      
       fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
@@ -53,6 +65,12 @@ export default function CatalogManager({ title, endpoint, idKey, descriptionKey 
         resetForm();
       });
     }
+    // --- LÓGICA AÑADIDA PARA EL BOTÓN SALIR ---
+    else if (cmd === 'exit') {
+      // Intenta cerrar la ventana/pestaña actual.
+      // Esto funcionará porque la pestaña fue abierta por un script.
+      window.close();
+    }
   };
 
   return (
@@ -63,59 +81,32 @@ export default function CatalogManager({ title, endpoint, idKey, descriptionKey 
         formData={formData}
         setFormData={setFormData}
         action={action}
-        idKey={idKey}
-        descriptionKey={descriptionKey}
+        columns={columns}
       />
 
       <div className="flex flex-wrap gap-2 mt-4">
-        <button
-          className="px-4 py-2 rounded bg-green-600 text-white hover:bg-green-700 transition"
-          onClick={() => handleCommand('add')}
+        {/* Tus botones de comando actuales */}
+        <button className="px-4 py-2 rounded bg-green-600 text-white hover:bg-green-700 transition" onClick={() => handleCommand('add')}>Adicionar</button>
+        <button className="px-4 py-2 rounded bg-yellow-500 text-white hover:bg-yellow-600 transition" onClick={() => handleCommand('edit')}>Modificar</button>
+        <button className="px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700 transition" onClick={() => handleCommand('delete')}>Eliminar</button>
+        <button className="px-4 py-2 rounded bg-gray-500 text-white hover:bg-gray-600 transition" onClick={() => handleCommand('inactivate')}>Inactivar</button>
+        <button className="px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-600 transition" onClick={() => handleCommand('reactivate')}>Reactivar</button>
+        <button className="px-4 py-2 rounded bg-indigo-600 text-white hover:bg-indigo-700 transition" onClick={() => handleCommand('update')}>Actualizar</button>
+        <button className="px-4 py-2 rounded bg-neutral-600 text-white hover:bg-neutral-700 transition" onClick={() => handleCommand('cancel')}>Cancelar</button>
+        
+        {/* --- NUEVO BOTÓN DE SALIR --- */}
+        <button 
+          className="px-4 py-2 rounded bg-pink-600 text-white hover:bg-pink-700 transition" 
+          onClick={() => handleCommand('exit')}
         >
-          Adicionar
-        </button>
-        <button
-          className="px-4 py-2 rounded bg-yellow-500 text-white hover:bg-yellow-600 transition"
-          onClick={() => handleCommand('edit')}
-        >
-          Modificar
-        </button>
-        <button
-          className="px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700 transition"
-          onClick={() => handleCommand('delete')}
-        >
-          Eliminar
-        </button>
-        <button
-          className="px-4 py-2 rounded bg-gray-500 text-white hover:bg-gray-600 transition"
-          onClick={() => handleCommand('inactivate')}
-        >
-          Inactivar
-        </button>
-        <button
-          className="px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-600 transition"
-          onClick={() => handleCommand('reactivate')}
-        >
-          Reactivar
-        </button>
-        <button
-          className="px-4 py-2 rounded bg-indigo-600 text-white hover:bg-indigo-700 transition"
-          onClick={() => handleCommand('update')}
-        >
-          Actualizar
-        </button>
-        <button
-          className="px-4 py-2 rounded bg-neutral-600 text-white hover:bg-neutral-700 transition"
-          onClick={() => handleCommand('cancel')}
-        >
-          Cancelar
+          Salir
         </button>
       </div>
+
       <CatalogTable
         records={records}
-        idKey={idKey}
-        descriptionKey={descriptionKey}
         onSelect={handleSelect}
+        columns={columns}
       />
     </div>
   );
