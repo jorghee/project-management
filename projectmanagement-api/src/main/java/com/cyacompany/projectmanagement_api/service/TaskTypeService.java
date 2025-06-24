@@ -1,10 +1,11 @@
 package com.cyacompany.projectmanagement_api.service;
 
-import com.cyacompany.projectmanagement_api.model.TaskType;
-import com.cyacompany.projectmanagement_api.repository.TaskTypeRepository;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.cyacompany.projectmanagement_api.model.TaskType;
+import com.cyacompany.projectmanagement_api.repository.TaskTypeRepository;
 
 @Service
 public class TaskTypeService {
@@ -16,7 +17,7 @@ public class TaskTypeService {
   }
 
   public List<TaskType> getAll() {
-    return repository.findAll();
+    return repository.findAllByOrderByIdAsc();
   }
 
   public TaskType getById(Integer id) {

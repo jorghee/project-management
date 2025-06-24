@@ -16,7 +16,7 @@ public class PriorityService {
   }
 
   public List<Priority> getAll() {
-    return repository.findAll();
+     return repository.findAllByOrderByIdAsc();
   }
 
   public Priority getById(Integer id) {
