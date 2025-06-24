@@ -16,7 +16,7 @@ public class ClientTypeService {
   }
 
   public List<ClientType> getAll() {
-    return repository.findAll();
+    return repository.findAllByOrderByIdAsc();
   }
 
   public ClientType getById(Integer id) {
