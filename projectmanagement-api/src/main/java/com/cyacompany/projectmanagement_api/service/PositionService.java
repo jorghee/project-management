@@ -16,7 +16,7 @@ public class PositionService {
   }
 
   public List<Position> getAll() {
-    return repository.findAll();
+    return repository.findAllByOrderByIdAsc();
   }
 
   public Position getById(Integer id) {

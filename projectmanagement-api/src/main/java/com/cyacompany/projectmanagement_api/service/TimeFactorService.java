@@ -16,7 +16,7 @@ public class TimeFactorService {
   }
 
   public List<TimeFactor> getAll() {
-    return repository.findAll();
+    return repository.findAllByOrderByIdAsc();
   }
 
   public TimeFactor getById(Integer id) {

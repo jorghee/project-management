@@ -16,7 +16,7 @@ public class ExperienceLevelService {
   }
 
   public List<ExperienceLevel> getAll() {
-    return repository.findAll();
+    return repository.findAllByOrderByIdAsc();
   }
 
   public ExperienceLevel getById(Integer id) {

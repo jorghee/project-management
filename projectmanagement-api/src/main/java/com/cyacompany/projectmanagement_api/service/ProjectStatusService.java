@@ -1,10 +1,11 @@
 package com.cyacompany.projectmanagement_api.service;
 
-import com.cyacompany.projectmanagement_api.model.ProjectStatus;
-import com.cyacompany.projectmanagement_api.repository.ProjectStatusRepository;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.cyacompany.projectmanagement_api.model.ProjectStatus;
+import com.cyacompany.projectmanagement_api.repository.ProjectStatusRepository;
 
 @Service
 public class ProjectStatusService {
@@ -16,7 +17,7 @@ public class ProjectStatusService {
   }
 
   public List<ProjectStatus> getAll() {
-    return repository.findAll();
+    return repository.findAllByOrderByIdAsc();
   }
 
   public ProjectStatus getById(Integer id) {

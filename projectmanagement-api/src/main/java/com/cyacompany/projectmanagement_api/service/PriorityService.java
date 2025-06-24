@@ -1,10 +1,11 @@
 package com.cyacompany.projectmanagement_api.service;
 
-import com.cyacompany.projectmanagement_api.model.Priority;
-import com.cyacompany.projectmanagement_api.repository.PriorityRepository;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.cyacompany.projectmanagement_api.model.Priority;
+import com.cyacompany.projectmanagement_api.repository.PriorityRepository;
 
 @Service
 public class PriorityService {
@@ -16,7 +17,7 @@ public class PriorityService {
   }
 
   public List<Priority> getAll() {
-     return repository.findAllByOrderByIdAsc();
+    return repository.findAllByOrderByIdAsc();
   }
 
   public Priority getById(Integer id) {

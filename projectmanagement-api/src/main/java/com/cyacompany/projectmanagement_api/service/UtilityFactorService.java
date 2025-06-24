@@ -16,7 +16,7 @@ public class UtilityFactorService {
   }
 
   public List<UtilityFactor> getAll() {
-    return repository.findAll();
+    return repository.findAllByOrderByIdAsc();
   }
 
   public UtilityFactor getById(Integer id) {
