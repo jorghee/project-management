@@ -18,6 +18,9 @@ public class UtilityFactor {
   @Column(name = "FacUtiDes", length = 100, nullable = false)
   private String description;
 
+  @Column(name = "FacUtiVal", nullable = false)
+  private Double value;
+
   @Column(name = "EstReg", length = 1, nullable = false)
   private String status;
 }
