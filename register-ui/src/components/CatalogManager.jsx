@@ -67,16 +67,50 @@ export default function CatalogManager({ title, endpoint, idKey, descriptionKey 
         descriptionKey={descriptionKey}
       />
 
-      <div className="space-x-2">
-        <button className="btn" onClick={() => handleCommand('add')}>Adicionar</button>
-        <button className="btn" onClick={() => handleCommand('edit')}>Modificar</button>
-        <button className="btn" onClick={() => handleCommand('delete')}>Eliminar</button>
-        <button className="btn" onClick={() => handleCommand('inactivate')}>Inactivar</button>
-        <button className="btn" onClick={() => handleCommand('reactivate')}>Reactivar</button>
-        <button className="btn" onClick={() => handleCommand('update')}>Actualizar</button>
-        <button className="btn" onClick={() => handleCommand('cancel')}>Cancelar</button>
+      <div className="flex flex-wrap gap-2 mt-4">
+        <button
+          className="px-4 py-2 rounded bg-green-600 text-white hover:bg-green-700 transition"
+          onClick={() => handleCommand('add')}
+        >
+          Adicionar
+        </button>
+        <button
+          className="px-4 py-2 rounded bg-yellow-500 text-white hover:bg-yellow-600 transition"
+          onClick={() => handleCommand('edit')}
+        >
+          Modificar
+        </button>
+        <button
+          className="px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700 transition"
+          onClick={() => handleCommand('delete')}
+        >
+          Eliminar
+        </button>
+        <button
+          className="px-4 py-2 rounded bg-gray-500 text-white hover:bg-gray-600 transition"
+          onClick={() => handleCommand('inactivate')}
+        >
+          Inactivar
+        </button>
+        <button
+          className="px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-600 transition"
+          onClick={() => handleCommand('reactivate')}
+        >
+          Reactivar
+        </button>
+        <button
+          className="px-4 py-2 rounded bg-indigo-600 text-white hover:bg-indigo-700 transition"
+          onClick={() => handleCommand('update')}
+        >
+          Actualizar
+        </button>
+        <button
+          className="px-4 py-2 rounded bg-neutral-600 text-white hover:bg-neutral-700 transition"
+          onClick={() => handleCommand('cancel')}
+        >
+          Cancelar
+        </button>
       </div>
-
       <CatalogTable
         records={records}
         idKey={idKey}
