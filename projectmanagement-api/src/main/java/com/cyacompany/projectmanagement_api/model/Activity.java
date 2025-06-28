@@ -16,11 +16,11 @@ public class Activity {
   private Integer id;
 
   @ManyToOne
-  @JoinColumn(name = "EtaCod", nullable = false)
+  @JoinColumn(name = "ActEtaCod", nullable = false)
   private Stage stage;
 
   @ManyToOne
-  @JoinColumn(name = "EmpCod", nullable = false)
+  @JoinColumn(name = "ActEmpCod", nullable = false)
   private Employee responsible;
 
   @Column(name = "ActNom", length = 100, nullable = false)
