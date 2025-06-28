@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "G4Z_FACTOR_UTILIDAD")
+@Table(name = "G4M_FACTOR_UTILIDAD")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,9 +18,9 @@ public class UtilityFactor {
   @Column(name = "FacUtiDes", length = 100, nullable = false)
   private String description;
 
-  @Column(name = "FacUtiVal", nullable = false)
+  @Column(name = "FacUtiVal", nullable = false, precision = 4, scale = 2)
   private Double value;
 
-  @Column(name = "EstReg", length = 1, nullable = false)
+  @Column(name = "FacEstReg", length = 1, nullable = false)
   private String status;
 }

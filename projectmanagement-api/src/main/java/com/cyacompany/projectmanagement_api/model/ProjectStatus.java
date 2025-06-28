@@ -15,9 +15,9 @@ public class ProjectStatus {
   @Column(name = "EstProCod")
   private Integer id;
 
-  @Column(name = "EstProDes", length = 100, nullable = false)
+  @Column(name = "EstProDes", length = 40, nullable = false)
   private String description;
 
-  @Column(name = "EstReg", length = 1, nullable = false)
+  @Column(name = "EstProEstReg", length = 1, nullable = false)
   private String status;
 }

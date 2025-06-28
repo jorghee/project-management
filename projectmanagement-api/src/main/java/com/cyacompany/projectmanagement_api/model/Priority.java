@@ -15,9 +15,9 @@ public class Priority {
   @Column(name = "PriCod")
   private Integer id;
 
-  @Column(name = "PriDes", length = 100, nullable = false)
+  @Column(name = "PriDes", length = 20, nullable = false)
   private String description;
 
-  @Column(name = "EstReg", length = 1, nullable = false)
+  @Column(name = "PriEstReg", length = 1, nullable = false)
   private String status;
 }

@@ -16,15 +16,15 @@ public class Task {
   private Integer id;
 
   @ManyToOne
-  @JoinColumn(name = "ActCod", nullable = false)
+  @JoinColumn(name = "TarActCod", nullable = false)
   private Activity activity;
 
   @ManyToOne
-  @JoinColumn(name = "TipTarCod", nullable = false)
-  private TaskType type;
+  @JoinColumn(name = "TarTipTarCod", nullable = false)
+  private TaskType taskType;
 
   @ManyToOne
-  @JoinColumn(name = "PriCod", nullable = false)
+  @JoinColumn(name = "TarPriCod", nullable = false)
   private Priority priority;
 
   @Column(name = "TarDes", length = 100, nullable = false)
@@ -39,6 +39,6 @@ public class Task {
   @Column(name = "TarEst", length = 1, nullable = false)
   private String taskStatus;
 
-  @Column(name = "EstReg", length = 1, nullable = false)
-  private String recordStatus;
+  @Column(name = "TarEstReg", length = 1, nullable = false)
+  private String status;
 }

@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "G4Z_NIVEL_EXPERIENCIA")
+@Table(name = "G2M_NIVEL_EXPERIENCIA")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,12 +15,12 @@ public class ExperienceLevel {
   @Column(name = "ExpCod")
   private Integer id;
 
-  @Column(name = "ExpDes", length = 100, nullable = false)
+  @Column(name = "ExpDes", length = 20, nullable = false)
   private String description;
 
-  @Column(name = "ExpVal", nullable = false)
+  @Column(name = "ExpVal", nullable = false, precision = 4, scale = 2)
   private Integer value;
 
-  @Column(name = "EstReg", length = 1, nullable = false)
+  @Column(name = "ExpEstReg", length = 1, nullable = false)
   private String status;
 }

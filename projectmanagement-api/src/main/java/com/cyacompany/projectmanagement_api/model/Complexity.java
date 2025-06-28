@@ -14,14 +14,14 @@ public class Complexity {
 
   @Id
   @ManyToOne
-  @JoinColumn(name = "UtiCod", nullable = false)
+  @JoinColumn(name = "ComUtiProCod", referencedColumnName = "UtiProCod", nullable = false)
   private ProjectUtility projectUtility;
 
   @Id
   @ManyToOne
-  @JoinColumn(name = "FacUtiCod", nullable = false)
+  @JoinColumn(name = "ComFacUtiCod", referencedColumnName = "FacUtiCod", nullable = false)
   private UtilityFactor utilityFactor;
 
-  @Column(name = "EstReg", length = 1, nullable = false)
+  @Column(name = "ComEstReg", length = 1, nullable = false)
   private String status;
 }

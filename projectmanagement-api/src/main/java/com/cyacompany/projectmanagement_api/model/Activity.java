@@ -32,6 +32,6 @@ public class Activity {
   @Column(name = "ActTieReal")
   private Integer realTime;
 
-  @Column(name = "EstReg", length = 1, nullable = false)
+  @Column(name = "ActEstReg", length = 1, nullable = false)
   private String status;
 }

@@ -18,12 +18,12 @@ public class Project {
   private Integer id;
 
   @ManyToOne
-  @JoinColumn(name = "CliCod", nullable = false)
+  @JoinColumn(name = "ProCliCod", nullable = false)
   private Client client;
 
   @ManyToOne
-  @JoinColumn(name = "EstProCod", nullable = false)
-  private ProjectStatus status;
+  @JoinColumn(name = "ProEstProCod", nullable = false)
+  private ProjectStatus projectStatus;
 
   @Column(name = "ProNom", length = 100, nullable = false)
   private String name;
@@ -31,12 +31,15 @@ public class Project {
   @Column(name = "ProFecIni", nullable = false)
   private LocalDate startDate;
 
-  @Column(name = "ProDurEst")
-  private Integer estimatedDuration;
+  @Column(name = "ProFecFin")
+  private LocalDate endDate;
 
-  @Column(name = "ProDurReal")
-  private Integer realDuration;
+  @Column(name = "ProMonEst", precision = 9, scale = 2)
+  private Double estimatedAmount;
 
-  @Column(name = "EstReg", length = 1, nullable = false)
-  private String recordStatus;
+  @Column(name = "ProMonReal", precision = 9, scale = 2)
+  private Integer realAmount;
+
+  @Column(name = "ProEstReg", length = 1, nullable = false)
+  private String status;
 }

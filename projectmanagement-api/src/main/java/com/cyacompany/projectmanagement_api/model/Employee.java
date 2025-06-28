@@ -3,8 +3,6 @@ package com.cyacompany.projectmanagement_api.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
-
 @Entity
 @Table(name = "G2M_EMPLEADO")
 @Getter
@@ -18,25 +16,16 @@ public class Employee {
   private Integer id;
 
   @ManyToOne
-  @JoinColumn(name = "CarCod", nullable = false)
+  @JoinColumn(name = "EmpCarCod", nullable = false)
   private Position position;
 
   @ManyToOne
-  @JoinColumn(name = "ExpCod", nullable = false)
+  @JoinColumn(name = "EmpNivExpCod", nullable = false)
   private ExperienceLevel experienceLevel;
 
   @Column(name = "EmpNom", length = 100, nullable = false)
   private String name;
 
-  @Column(name = "EmpDni", length = 20, nullable = false, unique = true)
-  private String document;
-
-  @Column(name = "EmpTel", length = 20)
-  private String phone;
-
-  @Column(name = "EmpFecIng", nullable = false)
-  private LocalDate hireDate;
-
-  @Column(name = "EstReg", length = 1, nullable = false)
+  @Column(name = "EmpEstReg", length = 1, nullable = false)
   private String status;
 }

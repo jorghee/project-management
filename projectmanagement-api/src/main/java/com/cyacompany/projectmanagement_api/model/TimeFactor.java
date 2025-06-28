@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "G4Z_FACTOR_TIEMPO")
+@Table(name = "G4M_FACTOR_TIEMPO")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,12 +15,12 @@ public class TimeFactor {
   @Column(name = "FacTieCod")
   private Integer id;
 
-  @Column(name = "FacTieDes", length = 100, nullable = false)
+  @Column(name = "FacTieDes", length = 50, nullable = false)
   private String description;
 
-  @Column(name = "FacTieVal", nullable = false)
+  @Column(name = "FacTieVal", nullable = false, precision = 4, scale = 2)
   private Double value;
 
-  @Column(name = "EstReg", length = 1, nullable = false)
+  @Column(name = "FacEstReg", length = 1, nullable = false)
   private String status;
 }

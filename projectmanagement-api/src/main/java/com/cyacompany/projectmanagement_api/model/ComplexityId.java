@@ -1,7 +1,6 @@
 package com.cyacompany.projectmanagement_api.model;
 
 import lombok.*;
-
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -17,7 +16,8 @@ public class ComplexityId implements Serializable {
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
-    if (!(o instanceof ComplexityId that)) return false;
+    if (o == null || getClass() != o.getClass()) return false;
+    ComplexityId that = (ComplexityId) o;
     return Objects.equals(projectUtility, that.projectUtility) &&
            Objects.equals(utilityFactor, that.utilityFactor);
   }

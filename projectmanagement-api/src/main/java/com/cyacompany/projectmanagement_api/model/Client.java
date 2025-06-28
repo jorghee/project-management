@@ -29,6 +29,6 @@ public class Client {
   @Column(name = "CliFecCse")
   private LocalDate terminationDate;
 
-  @Column(name = "EstReg", length = 1, nullable = false)
+  @Column(name = "CliEstReg", length = 1, nullable = false)
   private String status;
 }

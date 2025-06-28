@@ -12,26 +12,27 @@ import lombok.*;
 public class ProjectUtility {
 
   @Id
-  @Column(name = "UtiCod")
+  @Column(name = "UtiProCod")
   private Integer id;
 
-  @ManyToOne
-  @JoinColumn(name = "ProCod", nullable = false)
+  @OneToOne
+  @MapsId
+  @JoinColumn(name = "UtiProCod")
   private Project project;
 
-  @Column(name = "UtiPorBase", nullable = false)
-  private Double basePercentage;
-
   @ManyToOne
-  @JoinColumn(name = "FacTieCod", nullable = false)
+  @JoinColumn(name = "UtiFacTieCod", nullable = false)
   private TimeFactor timeFactor;
 
-  @Column(name = "UtiFacExp", nullable = false)
+  @Column(name = "UtiFacExp", nullable = false, precision = 4, scale = 2)
   private Double experienceFactor;
 
-  @Column(name = "UtiPorFinal", nullable = false)
+  @Column(name = "UtiPorBase", nullable = false, precision = 5, scale = 2)
+  private Double basePercentage;
+
+  @Column(name = "UtiPorFin", nullable = false, precision = 5, scale = 2)
   private Double finalPercentage;
 
-  @Column(name = "EstReg", length = 1, nullable = false)
+  @Column(name = "UtiEstReg", length = 1, nullable = false)
   private String status;
 }

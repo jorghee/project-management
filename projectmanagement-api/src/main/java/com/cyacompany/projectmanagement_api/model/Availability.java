@@ -29,6 +29,6 @@ public class Availability {
   @Column(name = "DisCarAct")
   private Integer currentLoad;
 
-  @Column(name = "EstReg", length = 1, nullable = false)
+  @Column(name = "DisEstReg", length = 1, nullable = false)
   private String status;
 }
