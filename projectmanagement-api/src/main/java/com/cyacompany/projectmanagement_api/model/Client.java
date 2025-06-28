@@ -1,6 +1,7 @@
 package com.cyacompany.projectmanagement_api.model;
 
 import jakarta.persistence.*;
+import java.time.LocalDate;
 import lombok.*;
 
 @Entity
@@ -16,17 +17,17 @@ public class Client {
   private Integer id;
 
   @ManyToOne
-  @JoinColumn(name = "TipCliCod", nullable = false)
+  @JoinColumn(name = "CliTipCliCod", nullable = false)
   private ClientType clientType;
 
   @Column(name = "CliNom", length = 100, nullable = false)
   private String name;
 
-  @Column(name = "CliDir", length = 150)
-  private String address;
+  @Column(name = "CliFecIng")
+  private LocalDate registrationDate;
 
-  @Column(name = "CliTel", length = 20)
-  private String phone;
+  @Column(name = "CliFecCse")
+  private LocalDate terminationDate;
 
   @Column(name = "EstReg", length = 1, nullable = false)
   private String status;

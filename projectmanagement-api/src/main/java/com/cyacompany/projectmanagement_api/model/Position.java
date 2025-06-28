@@ -18,6 +18,9 @@ public class Position {
   @Column(name = "CarDes", length = 100, nullable = false)
   private String description;
 
-  @Column(name = "EstReg", length = 1, nullable = false)
+  @Column(name = "CarCosHor", precision = 6, scale = 2)
+  private Double costPerHour;
+
+  @Column(name = "CarEstReg", length = 1, nullable = false)
   private String status;
 }
