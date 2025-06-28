@@ -12,16 +12,22 @@ import lombok.*;
 public class Availability {
 
   @Id
-  @Column(name = "EmpCod")
+  @Column(name = "DisEmpCod")
   private Integer employeeId;
 
   @OneToOne
   @MapsId
-  @JoinColumn(name = "EmpCod")
+  @JoinColumn(name = "DisEmpCod")
   private Employee employee;
 
   @Column(name = "DisEst", length = 1, nullable = false)
   private String availabilityStatus;
+
+  @Column(name = "DisCapSem")
+  private Integer weeklyCapacity;
+
+  @Column(name = "DisCarAct")
+  private Integer currentLoad;
 
   @Column(name = "EstReg", length = 1, nullable = false)
   private String status;
