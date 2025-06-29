@@ -1,8 +1,10 @@
 package com.cyacompany.projectmanagement_api.service;
 
+import com.cyacompany.projectmanagement_api.exception.ResourceNotFoundException;
 import com.cyacompany.projectmanagement_api.model.Position;
 import com.cyacompany.projectmanagement_api.repository.PositionRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,14 +22,19 @@ public class PositionService {
   }
 
   public Position getById(Integer id) {
-    return repository.findById(id).orElse(null);
+    return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Position not found with id: " + id));
   }
 
+  @Transactional
   public Position save(Position position) {
     return repository.save(position);
   }
 
+  @Transactional
   public void deleteById(Integer id) {
+    if (!repository.existsById(id)) {
+      throw new ResourceNotFoundException("Position not found with id: " + id);
+    }
     repository.deleteById(id);
   }
 }

@@ -1,9 +1,12 @@
 package com.cyacompany.projectmanagement_api.service;
 
+import com.cyacompany.projectmanagement_api.exception.ResourceNotFoundException;
 import com.cyacompany.projectmanagement_api.model.UtilityFactor;
 import com.cyacompany.projectmanagement_api.repository.UtilityFactorRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.beans.Transient;
 import java.util.List;
 
 @Service
@@ -20,14 +23,19 @@ public class UtilityFactorService {
   }
 
   public UtilityFactor getById(Integer id) {
-    return repository.findById(id).orElse(null);
+    return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("UtilityFactor not found with id: " + id));
   }
 
+  @Transactional
   public UtilityFactor save(UtilityFactor utilityFactor) {
     return repository.save(utilityFactor);
   }
 
+  @Transactional
   public void deleteById(Integer id) {
+    if (!repository.existsById(id)) {
+      throw new ResourceNotFoundException("UtilityFactor not found with id: " + id);
+    }
     repository.deleteById(id);
   }
 }
