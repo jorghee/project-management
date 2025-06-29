@@ -13,14 +13,14 @@ public class ProjectUtility {
 
   @Id
   @Column(name = "UtiProCod")
-  private Integer id;
+  private Integer projectId;
 
-  @OneToOne
+  @OneToOne(fetch = FetchType.LAZY)
   @MapsId
   @JoinColumn(name = "UtiProCod")
   private Project project;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "UtiFacTieCod", nullable = false)
   private TimeFactor timeFactor;
 

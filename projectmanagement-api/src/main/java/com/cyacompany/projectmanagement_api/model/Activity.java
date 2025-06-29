@@ -15,15 +15,15 @@ public class Activity {
   @Column(name = "ActCod")
   private Integer id;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "ActEtaCod", nullable = false)
   private Stage stage;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "ActEmpCod", nullable = false)
   private Employee responsible;
 
-  @Column(name = "ActNom", length = 100, nullable = false)
+  @Column(name = "ActNom", length = 80, nullable = false)
   private String name;
 
   @Column(name = "ActTieEst")

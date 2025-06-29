@@ -15,11 +15,11 @@ public class TaskAssignment {
   @Column(name = "AsiCod")
   private Integer id;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "AsiEmpCod", nullable = false)
   private Employee employee;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "AsiTarCod", nullable = false)
   private Task task;
 

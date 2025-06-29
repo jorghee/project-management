@@ -18,8 +18,8 @@ public class ExperienceLevel {
   @Column(name = "ExpDes", length = 20, nullable = false)
   private String description;
 
-  @Column(name = "ExpVal", nullable = false, precision = 4, scale = 2)
-  private Integer value;
+  @Column(name = "ExpVal", precision = 4, scale = 2)
+  private Double value;
 
   @Column(name = "ExpEstReg", length = 1, nullable = false)
   private String status;

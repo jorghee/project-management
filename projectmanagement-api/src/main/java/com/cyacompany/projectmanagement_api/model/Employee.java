@@ -15,11 +15,11 @@ public class Employee {
   @Column(name = "EmpCod")
   private Integer id;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "EmpCarCod", nullable = false)
   private Position position;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "EmpNivExpCod", nullable = false)
   private ExperienceLevel experienceLevel;
 

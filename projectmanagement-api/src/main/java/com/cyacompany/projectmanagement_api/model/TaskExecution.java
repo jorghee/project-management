@@ -16,7 +16,7 @@ public class TaskExecution {
   @Column(name = "EjeCod")
   private Integer id;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "EjeAsiCod", nullable = false)
   private TaskAssignment assignment;
 

@@ -15,7 +15,7 @@ public class Stage {
   @Column(name = "EtaCod")
   private Integer id;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "EtaProCod", nullable = false)
   private Project project;
 
@@ -24,9 +24,6 @@ public class Stage {
 
   @Column(name = "EtaTieEst")
   private Integer estimatedTime;
-
-  @Column(name = "EtaTieReal")
-  private Integer realTime;
 
   @Column(name = "EtaEstReg", length = 1, nullable = false)
   private String status;

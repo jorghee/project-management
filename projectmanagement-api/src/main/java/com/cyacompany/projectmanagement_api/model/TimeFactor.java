@@ -18,7 +18,7 @@ public class TimeFactor {
   @Column(name = "FacTieDes", length = 50, nullable = false)
   private String description;
 
-  @Column(name = "FacTieVal", nullable = false, precision = 4, scale = 2)
+  @Column(name = "FacTieVal", precision = 4, scale = 2)
   private Double value;
 
   @Column(name = "FacEstReg", length = 1, nullable = false)

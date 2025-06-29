@@ -15,7 +15,7 @@ public class Availability {
   @Column(name = "DisEmpCod")
   private Integer employeeId;
 
-  @OneToOne
+  @OneToOne(fetch = FetchType.LAZY)
   @MapsId
   @JoinColumn(name = "DisEmpCod")
   private Employee employee;

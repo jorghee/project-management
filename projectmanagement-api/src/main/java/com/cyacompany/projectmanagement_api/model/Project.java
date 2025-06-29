@@ -17,11 +17,11 @@ public class Project {
   @Column(name = "ProCod")
   private Integer id;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "ProCliCod", nullable = false)
   private Client client;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "ProEstProCod", nullable = false)
   private ProjectStatus projectStatus;
 
@@ -38,7 +38,7 @@ public class Project {
   private Double estimatedAmount;
 
   @Column(name = "ProMonReal", precision = 9, scale = 2)
-  private Integer realAmount;
+  private Double realAmount;
 
   @Column(name = "ProEstReg", length = 1, nullable = false)
   private String status;

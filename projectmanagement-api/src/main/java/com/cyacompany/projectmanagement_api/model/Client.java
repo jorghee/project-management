@@ -16,7 +16,7 @@ public class Client {
   @Column(name = "CliCod")
   private Integer id;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "CliTipCliCod", nullable = false)
   private ClientType clientType;
 
@@ -28,6 +28,9 @@ public class Client {
 
   @Column(name = "CliFecCse")
   private LocalDate terminationDate;
+
+  @Column(name = "CliEst", length = 1)
+  private String clientStatus;
 
   @Column(name = "CliEstReg", length = 1, nullable = false)
   private String status;

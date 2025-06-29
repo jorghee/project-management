@@ -15,15 +15,15 @@ public class Task {
   @Column(name = "TarCod")
   private Integer id;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "TarActCod", nullable = false)
   private Activity activity;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "TarTipTarCod", nullable = false)
   private TaskType taskType;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "TarPriCod", nullable = false)
   private Priority priority;
 
