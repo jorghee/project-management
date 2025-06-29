@@ -7,6 +7,8 @@ import com.cyacompany.projectmanagement_api.model.ClientType;
 import com.cyacompany.projectmanagement_api.repository.ClientRepository;
 import com.cyacompany.projectmanagement_api.repository.ClientTypeRepository;
 import com.cyacompany.projectmanagement_api.repository.ProjectRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -24,10 +26,13 @@ public class ClientService {
     this.projectRepository = projectRepository;
   }
 
-  public List<Client> getAll() {
-    // Para una entidad maestra como Cliente, es mejor paginar o filtrar.
-    // Devolvemos todos por ahora, pero en un caso real se necesitaría PagingAndSortingRepository.
-    return clientRepository.findAll();
+  /**
+   * Obtiene una lista paginada de clientes.
+   * @param pageable Configuración de paginación y ordenamiento.
+   * @return Una página de clientes.
+   */
+  public Page<Client> getAll(Pageable pageable) {
+    return clientRepository.findAll(pageable);
   }
 
   public Client getById(Integer id) {
@@ -71,7 +76,6 @@ public class ClientService {
       throw new ResourceNotFoundException("Client not found with id: " + id);
     }
     
-    // Lógica de negocio implementada: No borrar si tiene proyectos.
     if (projectRepository.existsByClientId(id)) {
       throw new BusinessLogicException("Cannot delete client with id: " + id + " because it has associated projects.");
     }
