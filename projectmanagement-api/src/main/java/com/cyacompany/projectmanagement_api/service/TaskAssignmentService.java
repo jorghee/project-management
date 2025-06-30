@@ -61,7 +61,7 @@ public class TaskAssignmentService {
   }
 
   @Transactional
-  public void delete(Integer id) {
+  public void deleteById(Integer id) {
     if (!assignmentRepository.existsById(id)) {
       throw new ResourceNotFoundException("TaskAssignment not found with id: " + id);
     }
