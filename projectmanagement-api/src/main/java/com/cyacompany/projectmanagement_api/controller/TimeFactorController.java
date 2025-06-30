@@ -40,14 +40,13 @@ public class TimeFactorController {
 
   @PostMapping
   public ResponseEntity<TimeFactorDto> create(@Valid @RequestBody TimeFactorDto dto) {
-    TimeFactor newTimeFactor = service.save(mapper.toEntity(dto));
+    TimeFactor newTimeFactor = service.create(mapper.toEntity(dto));
     return new ResponseEntity<>(mapper.toDto(newTimeFactor), HttpStatus.CREATED);
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<TimeFactorDto> update(@PathVariable Integer id, @Valid @RequestBody TimeFactorDto dto) {
-    dto.setId(id);
-    TimeFactor updatedTimeFactor = service.save(mapper.toEntity(dto));
+    TimeFactor updatedTimeFactor = service.update(id, mapper.toEntity(dto));
     return ResponseEntity.ok(mapper.toDto(updatedTimeFactor));
   }
 

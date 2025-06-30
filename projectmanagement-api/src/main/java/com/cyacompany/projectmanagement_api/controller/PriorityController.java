@@ -40,14 +40,13 @@ public class PriorityController {
 
   @PostMapping
   public ResponseEntity<PriorityDto> create(@Valid @RequestBody PriorityDto dto) {
-    Priority newPriority = service.save(mapper.toEntity(dto));
+    Priority newPriority = service.create(mapper.toEntity(dto));
     return new ResponseEntity<>(mapper.toDto(newPriority), HttpStatus.CREATED);
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<PriorityDto> update(@PathVariable Integer id, @Valid @RequestBody PriorityDto dto) {
-    dto.setId(id);
-    Priority updatedPriority = service.save(mapper.toEntity(dto));
+    Priority updatedPriority = service.update(id, mapper.toEntity(dto));
     return ResponseEntity.ok(mapper.toDto(updatedPriority));
   }
 

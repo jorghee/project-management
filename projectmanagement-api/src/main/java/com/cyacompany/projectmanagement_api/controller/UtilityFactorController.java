@@ -40,14 +40,13 @@ public class UtilityFactorController {
 
   @PostMapping
   public ResponseEntity<UtilityFactorDto> create(@Valid @RequestBody UtilityFactorDto dto) {
-    UtilityFactor newUtilityFactor = service.save(mapper.toEntity(dto));
+    UtilityFactor newUtilityFactor = service.create(mapper.toEntity(dto));
     return new ResponseEntity<>(mapper.toDto(newUtilityFactor), HttpStatus.CREATED);
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<UtilityFactorDto> update(@PathVariable Integer id, @Valid @RequestBody UtilityFactorDto dto) {
-    dto.setId(id);
-    UtilityFactor updatedUtilityFactor = service.save(mapper.toEntity(dto));
+    UtilityFactor updatedUtilityFactor = service.update(id, mapper.toEntity(dto));
     return ResponseEntity.ok(mapper.toDto(updatedUtilityFactor));
   }
 

@@ -40,14 +40,13 @@ public class ExperienceLevelController {
 
   @PostMapping
   public ResponseEntity<ExperienceLevelDto> create(@Valid @RequestBody ExperienceLevelDto dto) {
-    ExperienceLevel newExperienceLevel = service.save(mapper.toEntity(dto));
+    ExperienceLevel newExperienceLevel = service.create(mapper.toEntity(dto));
     return new ResponseEntity<>(mapper.toDto(newExperienceLevel), HttpStatus.CREATED);
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<ExperienceLevelDto> update(@PathVariable Integer id, @Valid @RequestBody ExperienceLevelDto dto) {
-    dto.setId(id);
-    ExperienceLevel updatedExperienceLevel = service.save(mapper.toEntity(dto));
+    ExperienceLevel updatedExperienceLevel = service.update(id, mapper.toEntity(dto));
     return ResponseEntity.ok(mapper.toDto(updatedExperienceLevel));
   }
 

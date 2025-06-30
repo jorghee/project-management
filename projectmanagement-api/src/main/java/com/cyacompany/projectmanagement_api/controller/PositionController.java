@@ -40,14 +40,13 @@ public class PositionController {
 
   @PostMapping
   public ResponseEntity<PositionDto> create(@Valid @RequestBody PositionDto dto) {
-    Position newPosition = service.save(mapper.toEntity(dto));
+    Position newPosition = service.create(mapper.toEntity(dto));
     return new ResponseEntity<>(mapper.toDto(newPosition), HttpStatus.CREATED);
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<PositionDto> update(@PathVariable Integer id, @Valid @RequestBody PositionDto dto) {
-    dto.setId(id);
-    Position updatedPosition = service.save(mapper.toEntity(dto));
+    Position updatedPosition = service.update(id, mapper.toEntity(dto));
     return ResponseEntity.ok(mapper.toDto(updatedPosition));
   }
 

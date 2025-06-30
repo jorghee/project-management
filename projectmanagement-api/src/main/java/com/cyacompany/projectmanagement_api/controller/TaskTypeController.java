@@ -40,14 +40,13 @@ public class TaskTypeController {
 
   @PostMapping
   public ResponseEntity<TaskTypeDto> create(@Valid @RequestBody TaskTypeDto dto) {
-    TaskType newTaskType = service.save(mapper.toEntity(dto));
+    TaskType newTaskType = service.create(mapper.toEntity(dto));
     return new ResponseEntity<>(mapper.toDto(newTaskType), HttpStatus.CREATED);
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<TaskTypeDto> update(@PathVariable Integer id, @Valid @RequestBody TaskTypeDto dto) {
-    dto.setId(id);
-    TaskType updatedTaskType = service.save(mapper.toEntity(dto));
+    TaskType updatedTaskType = service.update(id, mapper.toEntity(dto));
     return ResponseEntity.ok(mapper.toDto(updatedTaskType));
   }
 

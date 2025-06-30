@@ -40,14 +40,13 @@ public class ProjectStatusController {
 
   @PostMapping
   public ResponseEntity<ProjectStatusDto> create(@Valid @RequestBody ProjectStatusDto dto) {
-    ProjectStatus newProjectStatus = service.save(mapper.toEntity(dto));
+    ProjectStatus newProjectStatus = service.create(mapper.toEntity(dto));
     return new ResponseEntity<>(mapper.toDto(newProjectStatus), HttpStatus.CREATED);
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<ProjectStatusDto> update(@PathVariable Integer id, @Valid @RequestBody ProjectStatusDto dto) {
-    dto.setId(id);
-    ProjectStatus updatedProjectStatus = service.save(mapper.toEntity(dto));
+    ProjectStatus updatedProjectStatus = service.update(id, mapper.toEntity(dto));
     return ResponseEntity.ok(mapper.toDto(updatedProjectStatus));
   }
 

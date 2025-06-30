@@ -40,14 +40,13 @@ public class ClientTypeController {
 
   @PostMapping
   public ResponseEntity<ClientTypeDto> create(@Valid @RequestBody ClientTypeDto dto) {
-    ClientType newClientType = service.save(mapper.toEntity(dto));
+    ClientType newClientType = service.create(mapper.toEntity(dto));
     return new ResponseEntity<>(mapper.toDto(newClientType), HttpStatus.CREATED);
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<ClientTypeDto> update(@PathVariable Integer id, @Valid @RequestBody ClientTypeDto dto) {
-    dto.setId(id); // Asegurar que el ID del path se use
-    ClientType updatedClientType = service.save(mapper.toEntity(dto));
+    ClientType updatedClientType = service.update(id, mapper.toEntity(dto));
     return ResponseEntity.ok(mapper.toDto(updatedClientType));
   }
 
