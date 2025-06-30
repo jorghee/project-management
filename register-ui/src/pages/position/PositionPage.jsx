@@ -18,7 +18,6 @@ const PositionPage = () => {
   const [isEditing, setIsEditing] = useState(false);
   const { addNotification } = useNotifier();
 
-  // La lógica de fetch, save, delete, etc., es idéntica a SimpleCatalogManager
   const fetchRecords = useCallback(async () => {
     setIsLoading(true);
     try {

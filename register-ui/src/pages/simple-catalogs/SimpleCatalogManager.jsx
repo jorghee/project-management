@@ -13,7 +13,6 @@ const SimpleCatalogManager = ({ title, apiEndpoint }) => {
   const [isEditing, setIsEditing] = useState(false);
   const { addNotification } = useNotifier();
 
-  // --- Lógica de Carga de Datos ---
   const fetchRecords = useCallback(async () => {
     setIsLoading(true);
     try {
@@ -30,7 +29,6 @@ const SimpleCatalogManager = ({ title, apiEndpoint }) => {
     fetchRecords();
   }, [fetchRecords]);
 
-  // --- Manejadores de Estado del Formulario y Botones ---
   const handleClear = () => {
     setFormData(initialFormState);
     setSelectedRecord(null);
@@ -52,7 +50,6 @@ const SimpleCatalogManager = ({ title, apiEndpoint }) => {
     setFormData((prev) => ({ ...prev, [name]: val }));
   };
 
-  // --- Lógica CRUD ---
   const handleSave = async (e) => {
     e.preventDefault();
     if (formData.id === '' || formData.id === null) {
@@ -62,10 +59,10 @@ const SimpleCatalogManager = ({ title, apiEndpoint }) => {
     setIsLoading(true);
 
     try {
-      if (isEditing) { // Actualizar
+      if (isEditing) {
         await catalogService.update(apiEndpoint, formData.id, formData);
         addNotification(`${title} actualizado con éxito.`, 'success');
-      } else { // Crear
+      } else {
         // La validación de ID duplicado se maneja en el backend.
         // El frontend solo necesita mostrar el error si ocurre.
         await catalogService.create(apiEndpoint, formData);
@@ -74,7 +71,6 @@ const SimpleCatalogManager = ({ title, apiEndpoint }) => {
       handleClear();
       await fetchRecords();
     } catch (error) {
-      // Requisito 3 (Crear con ID duplicado): El error vendrá del backend.
       addNotification(`Error al guardar: ${error.message}`, 'error');
     } finally {
       setIsLoading(false);
@@ -102,7 +98,6 @@ const SimpleCatalogManager = ({ title, apiEndpoint }) => {
     }
   };
 
-  // --- Componentes de Renderizado ---
   const StatusBadge = ({ status }) => {
     const styles = {
       A: 'bg-green-100 text-green-800',
@@ -133,7 +128,7 @@ const SimpleCatalogManager = ({ title, apiEndpoint }) => {
                 name="id" 
                 value={formData.id} 
                 onChange={handleFormChange}
-                disabled={isEditing} // Requisito 1: ID inmutable en edición.
+                disabled={isEditing}
                 required
                 className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 ${isEditing ? 'bg-gray-200 cursor-not-allowed' : 'bg-white'}`}
               />
@@ -145,10 +140,8 @@ const SimpleCatalogManager = ({ title, apiEndpoint }) => {
             <div>
               <label htmlFor="status" className="block text-sm font-medium text-gray-700">Estado del Registro</label>
               <select name="status" value={formData.status} onChange={handleFormChange} disabled={!isEditing} className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 ${!isEditing ? 'bg-gray-200 cursor-not-allowed' : 'bg-white'}`}>
-                {/* Requisito 2 (Eliminar): Permitir reactivar/inactivar desde '*' */}
                 <option value="A">Activo</option>
                 <option value="I">Inactivo</option>
-                {/* Mostramos la opción 'Eliminado' solo si el registro está en ese estado, pero no se puede seleccionar activamente */}
                 {formData.status === '*' && <option value="*">Eliminado</option>}
               </select>
             </div>
@@ -187,7 +180,6 @@ const SimpleCatalogManager = ({ title, apiEndpoint }) => {
                 <tr 
                   key={record.id} 
                   onClick={() => setSelectedRecord(record)}
-                  // Requisito 2 (Eliminar): Ya no se tacha, solo se cambia el color de fondo
                   className={`cursor-pointer transition-colors 
                     ${record.status === '*' ? 'bg-red-50 text-gray-500' : ''}
                     ${selectedRecord?.id === record.id ? 'bg-blue-200' : 'hover:bg-gray-50'}`}

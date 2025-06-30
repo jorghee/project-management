@@ -17,7 +17,6 @@ const ExperienceLevelPage = () => {
   const [isEditing, setIsEditing] = useState(false);
   const { addNotification } = useNotifier();
 
-  // La lógica es idéntica a PositionPage, solo cambian las constantes
   const fetchRecords = useCallback(async () => {
     setIsLoading(true);
     try {
