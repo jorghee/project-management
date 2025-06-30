@@ -1,4 +1,5 @@
 import React from 'react';
+import StatusBadge from '../../components/common/StatusBadge';
 
 const PositionTable = ({ records, handleSelectRecord, selectedRecordId, isLoading }) => {
   return (
@@ -18,18 +19,23 @@ const PositionTable = ({ records, handleSelectRecord, selectedRecordId, isLoadin
             <tr
               key={record.id}
               onClick={() => handleSelectRecord(record)}
-              className={`cursor-pointer transition-colors ${selectedRecordId === record.id ? 'bg-blue-100' : 'hover:bg-gray-50'}`}
+              className={`cursor-pointer transition-colors 
+                ${record.status === '*' ? 'bg-red-50 text-gray-500' : ''}
+                ${selectedRecordId === record.id ? 'bg-blue-200' : 'hover:bg-gray-50'}`}
             >
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{record.id}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{record.description}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${record.costPerHour.toFixed(2)}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                {typeof record.costPerHour === 'number' ? `$${record.costPerHour.toFixed(2)}` : 'N/A'}
+              </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm">
-                {record.status === 'A'
-                  ? <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Activo</span>
-                  : <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Inactivo</span>}
+                <StatusBadge status={record.status} />
               </td>
             </tr>
           ))}
+          {!isLoading && records.length === 0 && (
+            <tr><td colSpan="4" className="text-center p-4 text-gray-500">No hay registros para mostrar.</td></tr>
+          )}
         </tbody>
       </table>
     </div>

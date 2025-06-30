@@ -8,15 +8,17 @@ import PositionTable from './PositionTable';
 const API_ENDPOINT = '/positions';
 const ENTITY_NAME = 'Cargo';
 
-const initialFormState = { id: '', description: '', costPerHour: '', status: 'A' };
+const initialFormState = { id: '', description: '', costPerHour: 0.0, status: 'A' };
 
 const PositionPage = () => {
   const [records, setRecords] = useState([]);
   const [selectedRecord, setSelectedRecord] = useState(null);
   const [formData, setFormData] = useState(initialFormState);
   const [isLoading, setIsLoading] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const { addNotification } = useNotifier();
 
+  // La lógica de fetch, save, delete, etc., es idéntica a SimpleCatalogManager
   const fetchRecords = useCallback(async () => {
     setIsLoading(true);
     try {
@@ -33,34 +35,43 @@ const PositionPage = () => {
     fetchRecords();
   }, [fetchRecords]);
 
-  const handleSelectRecord = (record) => {
-    setSelectedRecord(record);
-    setFormData(record);
+  const handleClear = () => {
+    setFormData(initialFormState);
+    setSelectedRecord(null);
+    setIsEditing(false);
+  };
+
+  const handleModify = () => {
+    if (!selectedRecord) {
+      addNotification('Por favor, seleccione un registro para modificar.', 'warning');
+      return;
+    }
+    setFormData(selectedRecord);
+    setIsEditing(true);
   };
 
   const handleFormChange = (e) => {
     const { name, value, type } = e.target;
-    const val = type === 'number' ? parseFloat(value) : value;
+    const val = type === 'number' ? (value === '' ? '' : parseFloat(value)) : value;
     setFormData((prev) => ({ ...prev, [name]: val }));
   };
-  
-  const reset = () => {
-    setFormData(initialFormState);
-    setSelectedRecord(null);
-  }
 
-  const handleSubmit = async (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
+    if (formData.id === '' || formData.id === null) {
+      addNotification('El campo Código (ID) no puede estar vacío.', 'error');
+      return;
+    }
     setIsLoading(true);
     try {
-      if (formData.id) {
+      if (isEditing) {
         await catalogService.update(API_ENDPOINT, formData.id, formData);
         addNotification(`${ENTITY_NAME} actualizado con éxito.`, 'success');
       } else {
         await catalogService.create(API_ENDPOINT, formData);
         addNotification(`${ENTITY_NAME} creado con éxito.`, 'success');
       }
-      reset();
+      handleClear();
       await fetchRecords();
     } catch (error) {
       addNotification(`Error al guardar: ${error.message}`, 'error');
@@ -68,7 +79,7 @@ const PositionPage = () => {
       setIsLoading(false);
     }
   };
-
+  
   const handleDelete = async () => {
     if (!selectedRecord) {
       addNotification('Por favor, seleccione un registro para eliminar.', 'warning');
@@ -77,9 +88,10 @@ const PositionPage = () => {
     if (window.confirm(`¿Está seguro de que desea eliminar el registro #${selectedRecord.id}?`)) {
       setIsLoading(true);
       try {
-        await catalogService.remove(API_ENDPOINT, selectedRecord.id);
-        addNotification('Registro eliminado con éxito.', 'success');
-        reset();
+        const recordToDelete = { ...selectedRecord, status: '*' };
+        await catalogService.update(API_ENDPOINT, selectedRecord.id, recordToDelete);
+        addNotification('Registro eliminado lógicamente.', 'success');
+        handleClear();
         await fetchRecords();
       } catch (error) {
         addNotification(`Error al eliminar: ${error.message}`, 'error');
@@ -102,20 +114,30 @@ const PositionPage = () => {
         <PositionForm 
           formData={formData}
           handleFormChange={handleFormChange}
-          handleSubmit={handleSubmit}
-          reset={reset}
+          handleSubmit={handleSave}
+          handleClear={handleClear}
           isLoading={isLoading}
+          isEditing={isEditing}
         />
 
-        <div className="mb-6 flex justify-start">
-          <button onClick={handleDelete} disabled={!selectedRecord || isLoading} className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 disabled:bg-red-400">
-            Eliminar Seleccionado
+        <div className="flex flex-wrap gap-3 mb-6">
+          <button onClick={handleSave} disabled={isLoading} className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:bg-blue-400">
+            {isEditing ? 'Guardar Cambios' : 'Crear Registro'}
+          </button>
+          <button onClick={handleModify} disabled={!selectedRecord || isLoading} className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 disabled:bg-gray-100 disabled:text-gray-400">
+            Modificar
+          </button>
+          <button onClick={handleDelete} disabled={!selectedRecord || isLoading || selectedRecord?.status === '*'} className="px-4 py-2 text-sm font-medium text-red-700 bg-red-100 rounded-md hover:bg-red-200 disabled:bg-gray-100 disabled:text-gray-400">
+            Eliminar
+          </button>
+          <button type="button" onClick={handleClear} className="ml-auto px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+            Limpiar Formulario
           </button>
         </div>
 
-        <PositionTable 
+        <PositionTable
           records={records}
-          handleSelectRecord={handleSelectRecord}
+          handleSelectRecord={setSelectedRecord}
           selectedRecordId={selectedRecord?.id}
           isLoading={isLoading}
         />
