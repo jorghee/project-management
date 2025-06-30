@@ -3,6 +3,8 @@ package com.cyacompany.projectmanagement_api.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "G3D_UTILIDAD_PROYECTO")
 @Getter
@@ -25,13 +27,13 @@ public class ProjectUtility {
   private TimeFactor timeFactor;
 
   @Column(name = "UtiFacExp", nullable = false, precision = 4, scale = 2)
-  private Double experienceFactor;
+  private BigDecimal experienceFactor;
 
   @Column(name = "UtiPorBase", nullable = false, precision = 5, scale = 2)
-  private Double basePercentage;
+  private BigDecimal basePercentage;
 
   @Column(name = "UtiPorFin", nullable = false, precision = 5, scale = 2)
-  private Double finalPercentage;
+  private BigDecimal finalPercentage;
 
   @Column(name = "UtiEstReg", length = 1, nullable = false)
   private String status;

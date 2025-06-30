@@ -3,6 +3,8 @@ package com.cyacompany.projectmanagement_api.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "G4M_FACTOR_TIEMPO")
 @Getter
@@ -19,7 +21,7 @@ public class TimeFactor {
   private String description;
 
   @Column(name = "FacTieVal", precision = 4, scale = 2)
-  private Double value;
+  private BigDecimal value;
 
   @Column(name = "FacEstReg", length = 1, nullable = false)
   private String status;

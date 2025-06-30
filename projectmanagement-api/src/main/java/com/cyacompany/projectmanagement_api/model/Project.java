@@ -3,6 +3,7 @@ package com.cyacompany.projectmanagement_api.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -35,10 +36,10 @@ public class Project {
   private LocalDate endDate;
 
   @Column(name = "ProMonEst", precision = 9, scale = 2)
-  private Double estimatedAmount;
+  private BigDecimal estimatedAmount;
 
   @Column(name = "ProMonReal", precision = 9, scale = 2)
-  private Double realAmount;
+  private BigDecimal realAmount;
 
   @Column(name = "ProEstReg", length = 1, nullable = false)
   private String status;
