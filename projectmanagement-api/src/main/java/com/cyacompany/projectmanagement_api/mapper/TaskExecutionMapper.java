@@ -11,5 +11,7 @@ public interface TaskExecutionMapper {
   @Mapping(source = "assignment.id", target = "assignmentId")
   TaskExecutionResponse toResponse(TaskExecution execution);
   
+  @Mapping(target = "id", ignore = true)
+  @Mapping(target = "assignment", ignore = true)
   TaskExecution toEntity(TaskExecutionRequest request);
 }

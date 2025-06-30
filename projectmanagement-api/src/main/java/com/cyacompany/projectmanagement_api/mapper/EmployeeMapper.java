@@ -17,5 +17,8 @@ public interface EmployeeMapper {
   @Mapping(source = "experienceLevel.description", target = "experienceLevelDescription")
   EmployeeResponse toResponse(Employee employee);
 
+  @Mapping(target = "id", ignore = true)
+  @Mapping(target = "position", ignore = true)
+  @Mapping(target = "experienceLevel", ignore = true)
   Employee toEntity(EmployeeRequest employeeRequest);
 }

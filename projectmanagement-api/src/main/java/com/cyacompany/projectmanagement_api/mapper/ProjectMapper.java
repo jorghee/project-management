@@ -17,5 +17,8 @@ public interface ProjectMapper {
   @Mapping(source = "projectStatus.description", target = "projectStatusDescription")
   ProjectResponse toResponse(Project project);
 
+  @Mapping(target = "id", ignore = true)
+  @Mapping(target = "client", ignore = true)
+  @Mapping(target = "projectStatus", ignore = true)
   Project toEntity(ProjectRequest projectRequest);
 }

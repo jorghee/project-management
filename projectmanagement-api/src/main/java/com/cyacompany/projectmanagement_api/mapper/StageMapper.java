@@ -15,5 +15,7 @@ public interface StageMapper {
   @Mapping(source = "project.name", target = "projectName")
   StageResponse toResponse(Stage stage);
 
+  @Mapping(target = "id", ignore = true)
+  @Mapping(target = "project", ignore = true)
   Stage toEntity(StageRequest stageRequest);
 }

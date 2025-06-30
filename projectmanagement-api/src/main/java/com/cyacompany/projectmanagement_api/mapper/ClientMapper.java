@@ -16,6 +16,7 @@ public interface ClientMapper {
   @Mapping(source = "clientType.description", target = "clientTypeDescription")
   ClientResponse toResponse(Client client);
 
-  // Mapea el DTO de solicitud a la entidad Client. Las relaciones se manejan en el servicio.
+  @Mapping(target = "id", ignore = true)
+  @Mapping(target = "clientType", ignore = true)
   Client toEntity(ClientRequest clientRequest);
 }
