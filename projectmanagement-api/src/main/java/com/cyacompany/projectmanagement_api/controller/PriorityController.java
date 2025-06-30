@@ -1,44 +1,59 @@
 package com.cyacompany.projectmanagement_api.controller;
 
+import com.cyacompany.projectmanagement_api.dto.PriorityDto;
+import com.cyacompany.projectmanagement_api.mapper.PriorityMapper;
 import com.cyacompany.projectmanagement_api.model.Priority;
 import com.cyacompany.projectmanagement_api.service.PriorityService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/priorities")
 public class PriorityController {
 
   private final PriorityService service;
+  private final PriorityMapper mapper;
 
-  public PriorityController(PriorityService service) {
+  public PriorityController(PriorityService service, PriorityMapper mapper) {
     this.service = service;
+    this.mapper = mapper;
   }
 
   @GetMapping
-  public List<Priority> getAll() {
-    return service.getAll();
+  public ResponseEntity<List<PriorityDto>> getAll() {
+    List<PriorityDto> dtoList = service.getAll().stream()
+      .map(mapper::toDto)
+      .collect(Collectors.toList());
+    return ResponseEntity.ok(dtoList);
   }
 
   @GetMapping("/{id}")
-  public Priority getById(@PathVariable Integer id) {
-    return service.getById(id);
+  public ResponseEntity<PriorityDto> getById(@PathVariable Integer id) {
+    Priority priority = service.getById(id);
+    return ResponseEntity.ok(mapper.toDto(priority));
   }
 
   @PostMapping
-  public Priority create(@RequestBody Priority priority) {
-    return service.save(priority);
+  public ResponseEntity<PriorityDto> create(@Valid @RequestBody PriorityDto dto) {
+    Priority newPriority = service.save(mapper.toEntity(dto));
+    return new ResponseEntity<>(mapper.toDto(newPriority), HttpStatus.CREATED);
   }
 
   @PutMapping("/{id}")
-  public Priority update(@PathVariable Integer id, @RequestBody Priority updated) {
-    updated.setId(id);
-    return service.save(updated);
+  public ResponseEntity<PriorityDto> update(@PathVariable Integer id, @Valid @RequestBody PriorityDto dto) {
+    dto.setId(id);
+    Priority updatedPriority = service.save(mapper.toEntity(dto));
+    return ResponseEntity.ok(mapper.toDto(updatedPriority));
   }
 
   @DeleteMapping("/{id}")
-  public void delete(@PathVariable Integer id) {
-    service.deleteById(id);
+  public ResponseEntity<Void> delete(@PathVariable Integer id) {
+    service.delete(id);
+    return ResponseEntity.noContent().build();
   }
 }
