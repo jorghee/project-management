@@ -16,59 +16,47 @@ import java.util.List;
 public class ComplexityService {
 
   private final ComplexityRepository complexityRepository;
-  private final ProjectUtilityRepository projectUtilityRepository;
-  private final UtilityFactorRepository utilityFactorRepository;
 
-  public ComplexityService(ComplexityRepository complexityRepository, ProjectUtilityRepository projectUtilityRepository,
-      UtilityFactorRepository utilityFactorRepository) {
+  public ComplexityService(ComplexityRepository complexityRepository) {
     this.complexityRepository = complexityRepository;
-    this.projectUtilityRepository = projectUtilityRepository;
-    this.utilityFactorRepository = utilityFactorRepository;
-  }
-
-  public List<Complexity> getAll() {
-    return complexityRepository.findAll();
-  }
-
-  public Complexity getById(Integer projectUtilityId, Integer utilityFactorId) {
-    ComplexityId id = new ComplexityId(projectUtilityId, utilityFactorId);
-    return complexityRepository.findById(id)
-      .orElseThrow(() -> new ResourceNotFoundException("Complexity not found with id: " + id));
-  }
-
-  @Transactional
-  public Complexity create(Complexity complexityDetails, Integer projectUtilityId, Integer utilityFactorId) {
-    ProjectUtility projectUtility = projectUtilityRepository.findById(projectUtilityId)
-      .orElseThrow(() -> new ResourceNotFoundException("ProjectUtility not found with id: " + projectUtilityId));
-    UtilityFactor utilityFactor = utilityFactorRepository.findById(utilityFactorId)
-      .orElseThrow(() -> new ResourceNotFoundException("UtilityFactor not found with id: " + utilityFactorId));
-
-    Complexity newComplexity = new Complexity();
-    newComplexity.setProjectUtility(projectUtility);
-    newComplexity.setUtilityFactor(utilityFactor);
-    newComplexity.setStatus(complexityDetails.getStatus());
-
-    return complexityRepository.save(newComplexity);
   }
 
   /**
-  * La actualización de una entidad con clave compuesta es inherentemente compleja.
-  * Normalmente no se actualiza la clave en sí. Solo se actualizan los otros campos.
-  * Si la clave debe cambiar, la operación correcta es eliminar el registro antiguo y crear uno nuevo.
-  */
-  @Transactional
-  public Complexity updateStatus(Integer projectUtilityId, Integer utilityFactorId, String newStatus) {
-    Complexity existingComplexity = getById(projectUtilityId, utilityFactorId);
-    existingComplexity.setStatus(newStatus);
-    return complexityRepository.save(existingComplexity);
+   * Obtiene todas las relaciones de complejidad.
+   * @return Lista de todas las complejidades.
+   */
+  public List<Complexity> getAll() {
+    return complexityRepository.findAll();
+  }
+  
+  /**
+   * Obtiene una relación de complejidad específica por su clave compuesta.
+   * @param projectUtilityId ID del ProjectUtility.
+   * @param utilityFactorId ID del UtilityFactor.
+   * @return La entidad Complexity.
+   */
+  public Complexity getById(Integer projectUtilityId, Integer utilityFactorId) {
+    ComplexityId id = new ComplexityId(projectUtilityId, utilityFactorId);
+    return complexityRepository.findById(id)
+      .orElseThrow(() -> new ResourceNotFoundException("Complexity not found for ProjectUtility ID: " + 
+            projectUtilityId + " and UtilityFactor ID: " + utilityFactorId));
   }
 
-  @Transactional
-  public void delete(Integer projectUtilityId, Integer utilityFactorId) {
-    ComplexityId id = new ComplexityId(projectUtilityId, utilityFactorId);
-    if (!complexityRepository.existsById(id)) {
-      throw new ResourceNotFoundException("Complexity not found with id: " + id);
-    }
-    complexityRepository.deleteById(id);
+  /**
+   * Obtiene todas las complejidades para un proyecto específico.
+   * @param projectId ID del proyecto.
+   * @return Lista de complejidades.
+   */
+  public List<Complexity> getByProjectId(Integer projectId) {
+    return complexityRepository.findByProjectUtility_ProjectId(projectId);
+  }
+
+  /**
+   * Obtiene todas las complejidades asociadas a un factor de utilidad.
+   * @param factorId ID del factor de utilidad.
+   * @return Lista de complejidades.
+   */
+  public List<Complexity> getByFactorId(Integer factorId) {
+    return complexityRepository.findByUtilityFactor_Id(factorId);
   }
 }
