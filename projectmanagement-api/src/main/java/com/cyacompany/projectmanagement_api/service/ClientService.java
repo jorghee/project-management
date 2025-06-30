@@ -55,14 +55,10 @@ public class ClientService {
     ClientType clientType = clientTypeRepository.findById(clientTypeId)
       .orElseThrow(() -> new ResourceNotFoundException("ClientType not found with id: " + clientTypeId));
 
-    existingClient.setName(clientDetails.getName());
-    existingClient.setEntryDate(clientDetails.getEntryDate());
-    existingClient.setTerminationDate(clientDetails.getTerminationDate());
-    existingClient.setClientStatus(clientDetails.getClientStatus());
-    existingClient.setStatus(clientDetails.getStatus());
-    existingClient.setClientType(clientType);
+    clientDetails.setId(id);
+    clientDetails.setClientType(clientType);
     
-    return clientRepository.save(existingClient);
+    return clientRepository.save(clientDetails);
   }
 
   /**
