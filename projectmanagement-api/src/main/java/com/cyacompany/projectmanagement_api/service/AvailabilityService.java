@@ -44,7 +44,7 @@ public class AvailabilityService {
   }
 
   @Transactional
-  public void delete(Integer employeeId) {
+  public void deleteById(Integer employeeId) {
     if (!availabilityRepository.existsById(employeeId)) {
       throw new ResourceNotFoundException("Availability not found for employee id: " + employeeId);
     }
