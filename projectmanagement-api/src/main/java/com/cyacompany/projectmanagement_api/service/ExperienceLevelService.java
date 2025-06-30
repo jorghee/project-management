@@ -1,5 +1,6 @@
 package com.cyacompany.projectmanagement_api.service;
 
+import com.cyacompany.projectmanagement_api.exception.BusinessLogicException;
 import com.cyacompany.projectmanagement_api.exception.ResourceNotFoundException;
 import com.cyacompany.projectmanagement_api.model.ExperienceLevel;
 import com.cyacompany.projectmanagement_api.repository.ExperienceLevelRepository;
@@ -26,8 +27,20 @@ public class ExperienceLevelService {
   }
 
   @Transactional
-  public ExperienceLevel save(ExperienceLevel experienceLevel) {
+  public ExperienceLevel create(ExperienceLevel experienceLevel) {
+    if (repository.existsById(experienceLevel.getId())) {
+      throw new BusinessLogicException("Cannot create ExperienceLevel. ID " + experienceLevel.getId() + " already exists.");
+    }
     return repository.save(experienceLevel);
+  }
+
+  @Transactional
+  public ExperienceLevel update(Integer id, ExperienceLevel experienceLevelDetails) {
+    if (!repository.existsById(id)) {
+      throw new ResourceNotFoundException("ExperienceLevel not found with id: " + id);
+    }
+    experienceLevelDetails.setId(id);
+    return repository.save(experienceLevelDetails);
   }
 
   @Transactional

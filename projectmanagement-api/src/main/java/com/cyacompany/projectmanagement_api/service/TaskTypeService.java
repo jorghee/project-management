@@ -1,5 +1,6 @@
 package com.cyacompany.projectmanagement_api.service;
 
+import com.cyacompany.projectmanagement_api.exception.BusinessLogicException;
 import com.cyacompany.projectmanagement_api.exception.ResourceNotFoundException;
 import com.cyacompany.projectmanagement_api.model.TaskType;
 import com.cyacompany.projectmanagement_api.repository.TaskTypeRepository;
@@ -26,8 +27,20 @@ public class TaskTypeService {
   }
 
   @Transactional
-  public TaskType save(TaskType taskType) {
+  public TaskType create(TaskType taskType) {
+    if (repository.existsById(taskType.getId())) {
+      throw new BusinessLogicException("Cannot create TaskType. ID " + taskType.getId() + " already exists.");
+    }
     return repository.save(taskType);
+  }
+
+  @Transactional
+  public TaskType update(Integer id, TaskType taskTypeDetails) {
+    if (!repository.existsById(id)) {
+      throw new ResourceNotFoundException("TaskType not found with id: " + id);
+    }
+    taskTypeDetails.setId(id);
+    return repository.save(taskTypeDetails);
   }
 
   @Transactional

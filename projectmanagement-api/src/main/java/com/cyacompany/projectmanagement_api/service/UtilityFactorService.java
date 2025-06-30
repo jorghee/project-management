@@ -1,5 +1,6 @@
 package com.cyacompany.projectmanagement_api.service;
 
+import com.cyacompany.projectmanagement_api.exception.BusinessLogicException;
 import com.cyacompany.projectmanagement_api.exception.ResourceNotFoundException;
 import com.cyacompany.projectmanagement_api.model.UtilityFactor;
 import com.cyacompany.projectmanagement_api.repository.UtilityFactorRepository;
@@ -27,8 +28,20 @@ public class UtilityFactorService {
   }
 
   @Transactional
-  public UtilityFactor save(UtilityFactor utilityFactor) {
+  public UtilityFactor create(UtilityFactor utilityFactor) {
+    if (repository.existsById(utilityFactor.getId())) {
+      throw new BusinessLogicException("Cannot create UtilityFactor. ID " + utilityFactor.getId() + " already exists.");
+    }
     return repository.save(utilityFactor);
+  }
+  
+  @Transactional
+  public UtilityFactor update(Integer id, UtilityFactor utilityFactorDetails) {
+    if (!repository.existsById(id)) {
+      throw new ResourceNotFoundException("UtilityFactor not found with id: " + id);
+    }
+    utilityFactorDetails.setId(id);
+    return repository.save(utilityFactorDetails);
   }
 
   @Transactional

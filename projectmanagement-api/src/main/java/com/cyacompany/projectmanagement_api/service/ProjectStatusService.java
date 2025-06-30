@@ -1,5 +1,6 @@
 package com.cyacompany.projectmanagement_api.service;
 
+import com.cyacompany.projectmanagement_api.exception.BusinessLogicException;
 import com.cyacompany.projectmanagement_api.exception.ResourceNotFoundException;
 import com.cyacompany.projectmanagement_api.model.ProjectStatus;
 import com.cyacompany.projectmanagement_api.repository.ProjectStatusRepository;
@@ -26,8 +27,20 @@ public class ProjectStatusService {
   }
 
   @Transactional
-  public ProjectStatus save(ProjectStatus status) {
-    return repository.save(status);
+  public ProjectStatus create(ProjectStatus projectStatus) {
+    if (repository.existsById(projectStatus.getId())) {
+      throw new BusinessLogicException("Cannot create ProjectStatus. ID " + projectStatus.getId() + " already exists.");
+    }
+    return repository.save(projectStatus);
+  }
+
+  @Transactional
+  public ProjectStatus update(Integer id, ProjectStatus projectStatusDetails) {
+    if (!repository.existsById(id)) {
+      throw new ResourceNotFoundException("ProjectStatus not found with id: " + id);
+    }
+    projectStatusDetails.setId(id);
+    return repository.save(projectStatusDetails);
   }
 
   @Transactional
