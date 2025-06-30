@@ -53,7 +53,7 @@ public class ProjectStatusController {
 
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> delete(@PathVariable Integer id) {
-    service.delete(id);
+    service.deleteById(id);
     return ResponseEntity.noContent().build();
   }
 }
