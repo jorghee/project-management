@@ -25,6 +25,20 @@ public class StageController {
     this.mapper = mapper;
   }
 
+  /**
+   * Endpoint para obtener TODAS las etapas sin paginación.
+   * Diseñado para la grilla principal del frontend.
+   * @return Lista de todos los DTOs de respuesta de Stage.
+   */
+  @GetMapping("/all")
+  public ResponseEntity<List<StageResponse>> getAllStages() {
+    List<Stage> stages = service.getAllUnpaged();
+    List<StageResponse> dtoList = stages.stream()
+      .map(mapper::toResponse)
+      .collect(Collectors.toList());
+    return ResponseEntity.ok(dtoList);
+  }
+
   // Endpoint para obtener etapas por proyecto
   @GetMapping("/by-project/{projectId}")
   public ResponseEntity<List<StageResponse>> getStagesByProjectId(@PathVariable Integer projectId) {
