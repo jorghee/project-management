@@ -42,6 +42,10 @@ public class ClientService {
 
   @Transactional
   public Client create(Client client, Integer clientTypeId) {
+    if (clientRepository.existsById(client.getId())) {
+      throw new BusinessLogicException("Cannot create Client. ID " + client.getId() + " already exists.");
+    }
+
     ClientType clientType = clientTypeRepository.findById(clientTypeId)
       .orElseThrow(() -> new ResourceNotFoundException("ClientType not found with id: " + clientTypeId));
     
@@ -51,7 +55,10 @@ public class ClientService {
 
   @Transactional
   public Client update(Integer id, Client clientDetails, Integer clientTypeId) {
-    Client existingClient = getById(id);
+    if (!clientRepository.existsById(id)) {
+      throw new ResourceNotFoundException("Client not found with id: " + id);
+    }
+
     ClientType clientType = clientTypeRepository.findById(clientTypeId)
       .orElseThrow(() -> new ResourceNotFoundException("ClientType not found with id: " + clientTypeId));
 

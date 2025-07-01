@@ -46,6 +46,10 @@ public class EmployeeService {
 
   @Transactional
   public Employee create(Employee employee, Integer positionId, Integer experienceId) {
+    if (employeeRepository.existsById(employee.getId())) {
+        throw new BusinessLogicException("Cannot create Employee. ID " + employee.getId() + " already exists.");
+    }
+
     Position position = positionRepository.findById(positionId)
       .orElseThrow(() -> new ResourceNotFoundException("Position not found with id: " + positionId));
     ExperienceLevel experienceLevel = experienceLevelRepository.findById(experienceId)
@@ -59,18 +63,20 @@ public class EmployeeService {
 
   @Transactional
   public Employee update(Integer id, Employee employeeDetails, Integer positionId, Integer experienceId) {
-    Employee employee = getById(id);
+    if (!employeeRepository.existsById(id)) {
+      throw new ResourceNotFoundException("Employee not found with id: " + id);
+    }
+
     Position position = positionRepository.findById(positionId)
       .orElseThrow(() -> new ResourceNotFoundException("Position not found with id: " + positionId));
     ExperienceLevel experienceLevel = experienceLevelRepository.findById(experienceId)
       .orElseThrow(() -> new ResourceNotFoundException("ExperienceLevel not found with id: " + experienceId));
 
-    employee.setName(employeeDetails.getName());
-    employee.setStatus(employeeDetails.getStatus());
-    employee.setPosition(position);
-    employee.setExperienceLevel(experienceLevel);
+    employeeDetails.setId(id);
+    employeeDetails.setPosition(position);
+    employeeDetails.setExperienceLevel(experienceLevel);
     
-    return employeeRepository.save(employee);
+    return employeeRepository.save(employeeDetails);
   }
 
   /**
