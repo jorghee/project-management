@@ -19,7 +19,6 @@ public interface TaskMapper {
   @Mapping(source = "priority.description", target = "priorityDescription")
   TaskResponse toResponse(Task task);
 
-  @Mapping(target = "id", ignore = true)
   @Mapping(target = "activity", ignore = true)
   @Mapping(target = "taskType", ignore = true)
   @Mapping(target = "priority", ignore = true)

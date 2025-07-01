@@ -50,6 +50,10 @@ public class TaskService {
   
   @Transactional
   public Task create(Task task, Integer activityId, Integer taskTypeId, Integer priorityId) {
+    if (taskRepository.existsById(task.getId())) {
+      throw new BusinessLogicException("Cannot create Task. ID " + task.getId() + " already exists.");
+    }
+
     Activity activity = activityRepository.findById(activityId)
       .orElseThrow(() -> new ResourceNotFoundException("Activity not found with id: " + activityId));
     TaskType taskType = taskTypeRepository.findById(taskTypeId)
@@ -66,7 +70,10 @@ public class TaskService {
   
   @Transactional
   public Task update(Integer id, Task taskDetails, Integer activityId, Integer taskTypeId, Integer priorityId) {
-    Task existingTask = getById(id);
+    if (!taskRepository.existsById(id)) {
+      throw new ResourceNotFoundException("Task not found with id: " + id);
+    }
+
     Activity activity = activityRepository.findById(activityId)
       .orElseThrow(() -> new ResourceNotFoundException("Activity not found with id: " + activityId));
     TaskType taskType = taskTypeRepository.findById(taskTypeId)
@@ -74,16 +81,12 @@ public class TaskService {
     Priority priority = priorityRepository.findById(priorityId)
       .orElseThrow(() -> new ResourceNotFoundException("Priority not found with id: " + priorityId));
 
-    existingTask.setDescription(taskDetails.getDescription());
-    existingTask.setEstimatedTime(taskDetails.getEstimatedTime());
-    existingTask.setRealTime(taskDetails.getRealTime());
-    existingTask.setTaskStatus(taskDetails.getTaskStatus());
-    existingTask.setStatus(taskDetails.getStatus());
-    existingTask.setActivity(activity);
-    existingTask.setTaskType(taskType);
-    existingTask.setPriority(priority);
+    taskDetails.setId(id);
+    taskDetails.setActivity(activity);
+    taskDetails.setTaskType(taskType);
+    taskDetails.setPriority(priority);
 
-    return taskRepository.save(existingTask);
+    return taskRepository.save(taskDetails);
   }
 
   /**
