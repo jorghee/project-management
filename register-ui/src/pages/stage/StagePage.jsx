@@ -76,6 +76,7 @@ const StagePage = () => {
     setIsLoading(true);
 
     const requestData = {
+      id: formData.id ? parseInt(formData.id, 10) : null,
       name: formData.name,
       estimatedTime: parseInt(formData.estimatedTime, 10),
       status: formData.status,
