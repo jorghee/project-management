@@ -17,7 +17,6 @@ public interface ActivityMapper {
   @Mapping(source = "responsible.name", target = "responsibleName")
   ActivityResponse toResponse(Activity activity);
 
-  @Mapping(target = "id", ignore = true)
   @Mapping(target = "stage", ignore = true)
   @Mapping(target = "responsible", ignore = true)
   Activity toEntity(ActivityRequest activityRequest);

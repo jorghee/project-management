@@ -1,5 +1,6 @@
 package com.cyacompany.projectmanagement_api.service;
 
+import com.cyacompany.projectmanagement_api.exception.BusinessLogicException;
 import com.cyacompany.projectmanagement_api.exception.ResourceNotFoundException;
 import com.cyacompany.projectmanagement_api.model.Activity;
 import com.cyacompany.projectmanagement_api.model.Employee;
@@ -34,6 +35,10 @@ public class ActivityService {
 
   @Transactional
   public Activity create(Activity activity, Integer stageId, Integer responsibleId) {
+    if (activityRepository.existsById(activity.getId())) {
+      throw new BusinessLogicException("Cannot create Activity. ID " + activity.getId() + " already exists.");
+    }
+
     Stage stage = stageRepository.findById(stageId)
       .orElseThrow(() -> new ResourceNotFoundException("Stage not found with id: " + stageId));
     Employee responsible = employeeRepository.findById(responsibleId)
@@ -46,20 +51,20 @@ public class ActivityService {
 
   @Transactional
   public Activity update(Integer id, Activity activityDetails, Integer stageId, Integer responsibleId) {
-    Activity existingActivity = getById(id);
+    if (!activityRepository.existsById(id)) {
+      throw new ResourceNotFoundException("Activity not found with id: " + id);
+    }
+
     Stage stage = stageRepository.findById(stageId)
       .orElseThrow(() -> new ResourceNotFoundException("Stage not found with id: " + stageId));
     Employee responsible = employeeRepository.findById(responsibleId)
       .orElseThrow(() -> new ResourceNotFoundException("Employee not found with id: " + responsibleId));
 
-    existingActivity.setName(activityDetails.getName());
-    existingActivity.setEstimatedTime(activityDetails.getEstimatedTime());
-    existingActivity.setRealTime(activityDetails.getRealTime());
-    existingActivity.setStatus(activityDetails.getStatus());
-    existingActivity.setStage(stage);
-    existingActivity.setResponsible(responsible);
-    
-    return activityRepository.save(existingActivity);
+    activityDetails.setId(id);
+    activityDetails.setStage(stage);
+    activityDetails.setResponsible(responsible);
+   
+    return activityRepository.save(activityDetails);
   }
 
   @Transactional
