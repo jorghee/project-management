@@ -90,6 +90,7 @@ const ProjectPage = () => {
     setIsLoading(true);
 
     const requestData = {
+      id: formData.id ? parseInt(formData.id, 10) : null,
       name: formData.name,
       startDate: formData.startDate || null,
       endDate: formData.endDate || null,

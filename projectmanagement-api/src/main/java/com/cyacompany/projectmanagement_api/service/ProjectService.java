@@ -46,6 +46,10 @@ public class ProjectService {
 
   @Transactional
   public Project create(Project project, Integer clientId, Integer statusId) {
+    if (projectRepository.existsById(project.getId())) {
+      throw new BusinessLogicException("Cannot create Project. ID " + project.getId() + " already exists.");
+    }
+
     Client client = clientRepository.findById(clientId)
       .orElseThrow(() -> new ResourceNotFoundException("Client not found with id: " + clientId));
     ProjectStatus status = projectStatusRepository.findById(statusId)
@@ -58,22 +62,20 @@ public class ProjectService {
 
   @Transactional
   public Project update(Integer id, Project projectDetails, Integer clientId, Integer statusId) {
-    Project project = getById(id);
+    if (!projectRepository.existsById(id)) {
+      throw new ResourceNotFoundException("Project not found with id: " + id);
+    }
+
     Client client = clientRepository.findById(clientId)
       .orElseThrow(() -> new ResourceNotFoundException("Client not found with id: " + clientId));
     ProjectStatus status = projectStatusRepository.findById(statusId)
       .orElseThrow(() -> new ResourceNotFoundException("ProjectStatus not found with id: " + statusId));
     
-    project.setName(projectDetails.getName());
-    project.setStartDate(projectDetails.getStartDate());
-    project.setEndDate(projectDetails.getEndDate());
-    project.setEstimatedAmount(projectDetails.getEstimatedAmount());
-    project.setRealAmount(projectDetails.getRealAmount());
-    project.setStatus(projectDetails.getStatus());
-    project.setClient(client);
-    project.setProjectStatus(status);
-    
-    return projectRepository.save(project);
+    projectDetails.setId(id);
+    projectDetails.setClient(client);
+    projectDetails.setProjectStatus(status);
+
+    return projectRepository.save(projectDetails);
   }
 
   /**
