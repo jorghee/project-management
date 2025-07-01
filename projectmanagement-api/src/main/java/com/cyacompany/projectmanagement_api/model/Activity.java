@@ -15,15 +15,15 @@ public class Activity {
   @Column(name = "ActCod")
   private Integer id;
 
-  @ManyToOne
-  @JoinColumn(name = "EtaCod", nullable = false)
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "ActEtaCod", nullable = false)
   private Stage stage;
 
-  @ManyToOne
-  @JoinColumn(name = "EmpCod", nullable = false)
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "ActEmpCod", nullable = false)
   private Employee responsible;
 
-  @Column(name = "ActNom", length = 100, nullable = false)
+  @Column(name = "ActNom", length = 80, nullable = false)
   private String name;
 
   @Column(name = "ActTieEst")
@@ -32,6 +32,6 @@ public class Activity {
   @Column(name = "ActTieReal")
   private Integer realTime;
 
-  @Column(name = "EstReg", length = 1, nullable = false)
+  @Column(name = "ActEstReg", length = 1, nullable = false)
   private String status;
 }

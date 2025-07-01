@@ -13,15 +13,15 @@ import lombok.*;
 public class Complexity {
 
   @Id
-  @ManyToOne
-  @JoinColumn(name = "UtiCod", nullable = false)
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "ComUtiProCod", referencedColumnName = "UtiProCod")
   private ProjectUtility projectUtility;
 
   @Id
-  @ManyToOne
-  @JoinColumn(name = "FacUtiCod", nullable = false)
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "ComFacUtiCod", referencedColumnName = "FacUtiCod")
   private UtilityFactor utilityFactor;
 
-  @Column(name = "EstReg", length = 1, nullable = false)
+  @Column(name = "ComEstReg", length = 1, nullable = false)
   private String status;
 }

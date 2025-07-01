@@ -15,9 +15,9 @@ public class ClientType {
   @Column(name = "TipCliCod")
   private Integer id;
 
-  @Column(name = "TipCliDes", length = 100, nullable = false)
+  @Column(name = "TipCliDes", length = 40, nullable = false)
   private String description;
 
-  @Column(name = "EstReg", length = 1, nullable = false)
+  @Column(name = "TipCliEstReg", length = 1, nullable = false)
   private String status;
 }

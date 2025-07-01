@@ -3,8 +3,6 @@ package com.cyacompany.projectmanagement_api.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
-
 @Entity
 @Table(name = "G2T_ASIGNACION_TAREA")
 @Getter
@@ -17,17 +15,14 @@ public class TaskAssignment {
   @Column(name = "AsiCod")
   private Integer id;
 
-  @ManyToOne
-  @JoinColumn(name = "EmpCod", nullable = false)
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "AsiEmpCod", nullable = false)
   private Employee employee;
 
-  @ManyToOne
-  @JoinColumn(name = "TarCod", nullable = false)
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "AsiTarCod", nullable = false)
   private Task task;
 
-  @Column(name = "AsiFec", nullable = false)
-  private LocalDate assignmentDate;
-
-  @Column(name = "EstReg", length = 1, nullable = false)
+  @Column(name = "AsiEstReg", length = 1, nullable = false)
   private String status;
 }

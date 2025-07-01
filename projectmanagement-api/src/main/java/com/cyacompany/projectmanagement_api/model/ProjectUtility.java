@@ -3,6 +3,8 @@ package com.cyacompany.projectmanagement_api.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "G3D_UTILIDAD_PROYECTO")
 @Getter
@@ -12,26 +14,27 @@ import lombok.*;
 public class ProjectUtility {
 
   @Id
-  @Column(name = "UtiCod")
-  private Integer id;
+  @Column(name = "UtiProCod")
+  private Integer projectId;
 
-  @ManyToOne
-  @JoinColumn(name = "ProCod", nullable = false)
+  @OneToOne(fetch = FetchType.LAZY)
+  @MapsId
+  @JoinColumn(name = "UtiProCod")
   private Project project;
 
-  @Column(name = "UtiPorBase", nullable = false)
-  private Double basePercentage;
-
-  @ManyToOne
-  @JoinColumn(name = "FacTieCod", nullable = false)
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "UtiFacTieCod", nullable = false)
   private TimeFactor timeFactor;
 
-  @Column(name = "UtiFacExp", nullable = false)
-  private Double experienceFactor;
+  @Column(name = "UtiFacExp", nullable = false, precision = 4, scale = 2)
+  private BigDecimal experienceFactor;
 
-  @Column(name = "UtiPorFinal", nullable = false)
-  private Double finalPercentage;
+  @Column(name = "UtiPorBase", nullable = false, precision = 5, scale = 2)
+  private BigDecimal basePercentage;
 
-  @Column(name = "EstReg", length = 1, nullable = false)
+  @Column(name = "UtiPorFin", nullable = false, precision = 5, scale = 2)
+  private BigDecimal finalPercentage;
+
+  @Column(name = "UtiEstReg", length = 1, nullable = false)
   private String status;
 }

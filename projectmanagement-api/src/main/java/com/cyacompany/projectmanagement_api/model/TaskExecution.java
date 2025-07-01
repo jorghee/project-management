@@ -1,9 +1,8 @@
 package com.cyacompany.projectmanagement_api.model;
 
 import jakarta.persistence.*;
-import lombok.*;
-
 import java.time.LocalDate;
+import lombok.*;
 
 @Entity
 @Table(name = "G2H_EJECUCION_TAREA")
@@ -17,8 +16,8 @@ public class TaskExecution {
   @Column(name = "EjeCod")
   private Integer id;
 
-  @ManyToOne
-  @JoinColumn(name = "AsiCod", nullable = false)
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "EjeAsiCod", nullable = false)
   private TaskAssignment assignment;
 
   @Column(name = "EjeFec", nullable = false)
@@ -30,6 +29,6 @@ public class TaskExecution {
   @Column(name = "EjeMin", nullable = false)
   private Integer minutes;
 
-  @Column(name = "EstReg", length = 1, nullable = false)
+  @Column(name = "EjeEstReg", length = 1, nullable = false)
   private String status;
 }

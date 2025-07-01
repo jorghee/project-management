@@ -3,6 +3,7 @@ package com.cyacompany.projectmanagement_api.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -17,13 +18,13 @@ public class Project {
   @Column(name = "ProCod")
   private Integer id;
 
-  @ManyToOne
-  @JoinColumn(name = "CliCod", nullable = false)
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "ProCliCod", nullable = false)
   private Client client;
 
-  @ManyToOne
-  @JoinColumn(name = "EstProCod", nullable = false)
-  private ProjectStatus status;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "ProEstProCod", nullable = false)
+  private ProjectStatus projectStatus;
 
   @Column(name = "ProNom", length = 100, nullable = false)
   private String name;
@@ -31,12 +32,15 @@ public class Project {
   @Column(name = "ProFecIni", nullable = false)
   private LocalDate startDate;
 
-  @Column(name = "ProDurEst")
-  private Integer estimatedDuration;
+  @Column(name = "ProFecFin")
+  private LocalDate endDate;
 
-  @Column(name = "ProDurReal")
-  private Integer realDuration;
+  @Column(name = "ProMonEst", precision = 9, scale = 2)
+  private BigDecimal estimatedAmount;
 
-  @Column(name = "EstReg", length = 1, nullable = false)
-  private String recordStatus;
+  @Column(name = "ProMonReal", precision = 9, scale = 2)
+  private BigDecimal realAmount;
+
+  @Column(name = "ProEstReg", length = 1, nullable = false)
+  private String status;
 }

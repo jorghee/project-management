@@ -15,19 +15,16 @@ public class Stage {
   @Column(name = "EtaCod")
   private Integer id;
 
-  @ManyToOne
-  @JoinColumn(name = "ProCod", nullable = false)
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "EtaProCod", nullable = false)
   private Project project;
 
-  @Column(name = "EtaNom", length = 100, nullable = false)
+  @Column(name = "EtaNom", length = 50, nullable = false)
   private String name;
 
   @Column(name = "EtaTieEst")
   private Integer estimatedTime;
 
-  @Column(name = "EtaTieReal")
-  private Integer realTime;
-
-  @Column(name = "EstReg", length = 1, nullable = false)
+  @Column(name = "EtaEstReg", length = 1, nullable = false)
   private String status;
 }

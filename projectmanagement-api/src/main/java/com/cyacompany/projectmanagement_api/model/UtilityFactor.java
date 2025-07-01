@@ -3,8 +3,10 @@ package com.cyacompany.projectmanagement_api.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Entity
-@Table(name = "G4Z_FACTOR_UTILIDAD")
+@Table(name = "G4M_FACTOR_UTILIDAD")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,9 +17,12 @@ public class UtilityFactor {
   @Column(name = "FacUtiCod")
   private Integer id;
 
-  @Column(name = "FacUtiDes", length = 100, nullable = false)
+  @Column(name = "FacUtiDes", length = 50, nullable = false)
   private String description;
 
-  @Column(name = "EstReg", length = 1, nullable = false)
+  @Column(name = "FacUtiVal", precision = 4, scale = 2)
+  private BigDecimal value;
+
+  @Column(name = "FacEstReg", length = 1, nullable = false)
   private String status;
 }
