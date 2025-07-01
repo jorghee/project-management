@@ -8,6 +8,8 @@ import com.cyacompany.projectmanagement_api.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class AvailabilityService {
   
@@ -17,6 +19,14 @@ public class AvailabilityService {
   public AvailabilityService(AvailabilityRepository availabilityRepository, EmployeeRepository employeeRepository) {
     this.availabilityRepository = availabilityRepository;
     this.employeeRepository = employeeRepository;
+  }
+
+  /**
+   * Obtiene todos los registros de disponibilidad.
+   * @return Una lista de todas las disponibilidades.
+   */
+  public List<Availability> getAll() {
+    return availabilityRepository.findAll();
   }
 
   public Availability getByEmployeeId(Integer employeeId) {

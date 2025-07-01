@@ -10,6 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/api/availabilities")
 public class AvailabilityController {
@@ -20,6 +23,18 @@ public class AvailabilityController {
   public AvailabilityController(AvailabilityService service, AvailabilityMapper mapper) {
     this.service = service;
     this.mapper = mapper;
+  }
+
+  /**
+   * Obtiene todos los registros de disponibilidad.
+   * @return Lista de DTOs de respuesta de Availability.
+   */
+  @GetMapping
+  public ResponseEntity<List<AvailabilityResponse>> getAll() {
+    List<AvailabilityResponse> dtoList = service.getAll().stream()
+        .map(mapper::toResponse)
+        .collect(Collectors.toList());
+    return ResponseEntity.ok(dtoList);
   }
 
   /**
