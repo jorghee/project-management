@@ -10,6 +10,8 @@ import com.cyacompany.projectmanagement_api.repository.TimeFactorRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class ProjectUtilityService {
 
@@ -17,10 +19,19 @@ public class ProjectUtilityService {
   private final ProjectRepository projectRepository;
   private final TimeFactorRepository timeFactorRepository;
 
-  public ProjectUtilityService(ProjectUtilityRepository utilityRepository, ProjectRepository projectRepository, TimeFactorRepository timeFactorRepository) {
+  public ProjectUtilityService(ProjectUtilityRepository utilityRepository,
+      ProjectRepository projectRepository, TimeFactorRepository timeFactorRepository) {
     this.utilityRepository = utilityRepository;
     this.projectRepository = projectRepository;
     this.timeFactorRepository = timeFactorRepository;
+  }
+
+  /**
+   * Obtiene todos los registros de utilidad de proyecto.
+   * @return Una lista de todas las utilidades.
+   */
+  public List<ProjectUtility> getAll() {
+    return utilityRepository.findAll();
   }
 
   public ProjectUtility getByProjectId(Integer projectId) {
