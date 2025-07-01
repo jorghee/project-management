@@ -87,6 +87,7 @@ const TaskPage = () => {
     setIsLoading(true);
 
     const requestData = {
+      id: formData.id ? parseInt(formData.id, 10) : null,
       description: formData.description,
       estimatedTime: parseInt(formData.estimatedTime, 10),
       realTime: parseInt(formData.realTime, 10),
