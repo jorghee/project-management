@@ -24,6 +24,15 @@ public class StageService {
     this.activityRepository = activityRepository;
   }
 
+  /**
+   * Obtiene todas las etapas sin paginación, ordenadas por ID.
+   * Este método es ideal para poblar la grilla principal en el frontend.
+   * @return Una lista de todas las entidades Stage.
+   */
+  public List<Stage> getAllUnpaged() {
+    return stageRepository.findAllByOrderByIdAsc();
+  }
+
   public List<Stage> getAll() {
     // No es una operación común, pero se mantiene por completitud del CRUD.
     return stageRepository.findAll();
