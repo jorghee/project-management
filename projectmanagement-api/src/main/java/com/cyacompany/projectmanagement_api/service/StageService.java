@@ -58,6 +58,10 @@ public class StageService {
 
   @Transactional
   public Stage create(Stage stage, Integer projectId) {
+    if (stageRepository.existsById(stage.getId())) {
+      throw new BusinessLogicException("Cannot create Stage. ID " + stage.getId() + " already exists.");
+    }
+
     Project project = projectRepository.findById(projectId)
       .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + projectId));
     
@@ -67,16 +71,17 @@ public class StageService {
 
   @Transactional
   public Stage update(Integer id, Stage stageDetails, Integer projectId) {
-    Stage existingStage = getById(id);
+    if (!stageRepository.existsById(id)) {
+        throw new ResourceNotFoundException("Stage not found with id: " + id);
+    }
+
     Project project = projectRepository.findById(projectId)
       .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + projectId));
 
-    existingStage.setName(stageDetails.getName());
-    existingStage.setEstimatedTime(stageDetails.getEstimatedTime());
-    existingStage.setStatus(stageDetails.getStatus());
-    existingStage.setProject(project);
+    stageDetails.setId(id);
+    stageDetails.setProject(project);
     
-    return stageRepository.save(existingStage);
+    return stageRepository.save(stageDetails);
   }
 
 
