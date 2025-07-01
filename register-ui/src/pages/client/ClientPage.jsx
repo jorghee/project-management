@@ -81,6 +81,7 @@ const ClientPage = () => {
     setIsLoading(true);
 
     const requestData = {
+      id: formData.id ? parseInt(formData.id, 10) : null,
       name: formData.name,
       entryDate: formData.entryDate || null,
       terminationDate: formData.terminationDate || null,
