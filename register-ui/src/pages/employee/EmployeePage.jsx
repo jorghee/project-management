@@ -80,6 +80,7 @@ const EmployeePage = () => {
 
     try {
       const requestData = {
+        id: formData.id ? parseInt(formData.id, 10) : null,
         name: formData.name,
         status: formData.status,
         positionId: formData.positionId,
