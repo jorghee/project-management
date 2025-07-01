@@ -16,7 +16,6 @@ public interface ClientMapper {
   @Mapping(source = "clientType.description", target = "clientTypeDescription")
   ClientResponse toResponse(Client client);
 
-  @Mapping(target = "id", ignore = true)
   @Mapping(target = "clientType", ignore = true)
   Client toEntity(ClientRequest clientRequest);
 }
