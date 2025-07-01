@@ -1,5 +1,6 @@
 package com.cyacompany.projectmanagement_api.service;
 
+import com.cyacompany.projectmanagement_api.exception.BusinessLogicException;
 import com.cyacompany.projectmanagement_api.exception.ResourceNotFoundException;
 import com.cyacompany.projectmanagement_api.model.Employee;
 import com.cyacompany.projectmanagement_api.model.Task;
@@ -34,6 +35,10 @@ public class TaskAssignmentService {
 
   @Transactional
   public TaskAssignment create(TaskAssignment assignment, Integer employeeId, Integer taskId) {
+    if (assignmentRepository.existsById(assignment.getId())) {
+      throw new BusinessLogicException("Cannot create TaskAssignment. ID " + assignment.getId() + " already exists.");
+    }
+
     Employee employee = employeeRepository.findById(employeeId)
       .orElseThrow(() -> new ResourceNotFoundException("Employee not found with id: " + employeeId));
     Task task = taskRepository.findById(taskId)
@@ -47,17 +52,20 @@ public class TaskAssignmentService {
 
   @Transactional
   public TaskAssignment update(Integer id, TaskAssignment assignmentDetails, Integer employeeId, Integer taskId) {
-    TaskAssignment existingAssignment = getById(id);
+    if (!assignmentRepository.existsById(id)) {
+      throw new ResourceNotFoundException("TaskAssignment not found with id: " + id);
+    }
+
     Employee employee = employeeRepository.findById(employeeId)
       .orElseThrow(() -> new ResourceNotFoundException("Employee not found with id: " + employeeId));
     Task task = taskRepository.findById(taskId)
       .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + taskId));
 
-    existingAssignment.setEmployee(employee);
-    existingAssignment.setTask(task);
-    existingAssignment.setStatus(assignmentDetails.getStatus());
+    assignmentDetails.setId(id);
+    assignmentDetails.setEmployee(employee);
+    assignmentDetails.setTask(task);
 
-    return assignmentRepository.save(existingAssignment);
+    return assignmentRepository.save(assignmentDetails);
   }
 
   @Transactional

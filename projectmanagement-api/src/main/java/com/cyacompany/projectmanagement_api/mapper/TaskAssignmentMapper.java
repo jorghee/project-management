@@ -14,7 +14,6 @@ public interface TaskAssignmentMapper {
   @Mapping(source = "task.description", target = "taskDescription")
   TaskAssignmentResponse toResponse(TaskAssignment assignment);
 
-  @Mapping(target = "id", ignore = true)
   @Mapping(target = "employee", ignore = true)
   @Mapping(target = "task", ignore = true)
   TaskAssignment toEntity(TaskAssignmentRequest request);

@@ -1,5 +1,6 @@
 package com.cyacompany.projectmanagement_api.service;
 
+import com.cyacompany.projectmanagement_api.exception.BusinessLogicException;
 import com.cyacompany.projectmanagement_api.exception.ResourceNotFoundException;
 import com.cyacompany.projectmanagement_api.model.TaskAssignment;
 import com.cyacompany.projectmanagement_api.model.TaskExecution;
@@ -30,6 +31,10 @@ public class TaskExecutionService {
 
   @Transactional
   public TaskExecution create(TaskExecution execution, Integer assignmentId) {
+    if (executionRepository.existsById(execution.getId())) {
+      throw new BusinessLogicException("Cannot create TaskExecution. ID " + execution.getId() + " already exists.");
+    }
+
     TaskAssignment assignment = assignmentRepository.findById(assignmentId)
       .orElseThrow(() -> new ResourceNotFoundException("TaskAssignment not found with id: " + assignmentId));
 
@@ -39,17 +44,17 @@ public class TaskExecutionService {
 
   @Transactional
   public TaskExecution update(Integer id, TaskExecution executionDetails, Integer assignmentId) {
-    TaskExecution existingExecution = getById(id);
+    if (!executionRepository.existsById(id)) {
+      throw new ResourceNotFoundException("TaskExecution not found with id: " + id);
+    }
+
     TaskAssignment assignment = assignmentRepository.findById(assignmentId)
       .orElseThrow(() -> new ResourceNotFoundException("TaskAssignment not found with id: " + assignmentId));
 
-    existingExecution.setExecutionDate(executionDetails.getExecutionDate());
-    existingExecution.setHours(executionDetails.getHours());
-    existingExecution.setMinutes(executionDetails.getMinutes());
-    existingExecution.setStatus(executionDetails.getStatus());
-    existingExecution.setAssignment(assignment);
-    
-    return executionRepository.save(existingExecution);
+    executionDetails.setId(id);
+    executionDetails.setAssignment(assignment);
+   
+    return executionRepository.save(executionDetails);
   }
 
   @Transactional
