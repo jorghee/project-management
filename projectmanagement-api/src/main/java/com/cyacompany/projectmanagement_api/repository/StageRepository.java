@@ -15,4 +15,6 @@ public interface StageRepository extends JpaRepository<Stage, Integer> {
   List<Stage> findByProjectIdOrderByIdAsc(Integer projectId);
 
   boolean existsByProjectId(Integer projectId); 
+
+  List<Stage> findAllByOrderByIdAsc();
 }
