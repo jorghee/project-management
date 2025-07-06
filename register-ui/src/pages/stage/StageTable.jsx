@@ -10,7 +10,7 @@ const StageTable = ({ records, handleSelectRecord, selectedRecordId, isLoading }
             <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Código</th>
             <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Nombre de Etapa</th>
             <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Proyecto</th>
-            <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Tiempo Est. (h)</th>
+            <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Tiempo Estimado</th>
             <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Estado Registro</th>
           </tr>
         </thead>
@@ -27,7 +27,7 @@ const StageTable = ({ records, handleSelectRecord, selectedRecordId, isLoading }
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">{record.id}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm">{record.name}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm">{record.projectName}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm">{record.estimatedTime}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm">{record.estimatedTime} h</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm">
                 <StatusBadge status={record.status} />
               </td>

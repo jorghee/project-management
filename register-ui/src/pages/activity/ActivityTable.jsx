@@ -11,7 +11,8 @@ const ActivityTable = ({ records, handleSelectRecord, selectedRecordId, isLoadin
             <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Nombre Actividad</th>
             <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Etapa</th>
             <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Responsable</th>
-            <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Tiempo Est.</th>
+            <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Tiempo Estimado</th>
+            <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Tiempo Real</th>
             <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Estado</th>
           </tr>
         </thead>
@@ -30,6 +31,7 @@ const ActivityTable = ({ records, handleSelectRecord, selectedRecordId, isLoadin
               <td className="px-6 py-4 whitespace-nowrap text-sm">{record.stageName}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm">{record.responsibleName}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm">{record.estimatedTime} h</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm">{record.realTime} h</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm">
                 <StatusBadge status={record.status} />
               </td>
