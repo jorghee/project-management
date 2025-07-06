@@ -34,8 +34,12 @@ const ProjectTable = ({ records, handleSelectRecord, selectedRecordId, isLoading
               <td className="px-6 py-4 whitespace-nowrap text-sm">{record.projectStatusDescription}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm">{record.startDate}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm">{record.endDate}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm">{record.estimatedAmount}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm">{record.realAmount}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm">
+                {typeof record.estimatedAmount === 'number' ? `$${record.estimatedAmount.toFixed(2)}` : 'N/A'}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm">
+                {typeof record.realAmount === 'number' ? `$${record.realAmount.toFixed(2)}` : 'N/A'}
+              </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm">
                 <StatusBadge status={record.status} />
               </td>

@@ -61,7 +61,7 @@ const ProjectForm = ({ formData, handleFormChange, handleSubmit, isLoading, isEd
           />
         </div>
         <div>
-          <label htmlFor="estimatedAmount" className="block text-sm font-medium text-gray-700">Monto Estimado</label>
+          <label htmlFor="estimatedAmount" className="block text-sm font-medium text-gray-700">Monto Estimado ($)</label>
           <input
             type="number" name="estimatedAmount" value={formData.estimatedAmount} onChange={handleFormChange}
             min="0" step="0.01"
