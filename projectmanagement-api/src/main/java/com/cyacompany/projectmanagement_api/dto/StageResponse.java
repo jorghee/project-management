@@ -7,6 +7,7 @@ public class StageResponse {
   private Integer id;
   private String name;
   private Integer estimatedTime;
+  private Integer realTime;
   private String status;
   
   // Aplanamos la relación

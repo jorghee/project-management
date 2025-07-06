@@ -20,6 +20,9 @@ public class StageRequest {
 
   @PositiveOrZero
   private Integer estimatedTime;
+
+  @PositiveOrZero
+  private Integer realTime;
   
   @NotBlank
   @Size(max = 1)

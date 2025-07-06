@@ -25,6 +25,9 @@ public class Stage {
   @Column(name = "EtaTieEst")
   private Integer estimatedTime;
 
+  @Column(name = "EtaTieReal")
+  private Integer realTime;
+
   @Column(name = "EtaEstReg", length = 1, nullable = false)
   private String status;
 }

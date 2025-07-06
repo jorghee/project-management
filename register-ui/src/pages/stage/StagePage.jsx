@@ -12,6 +12,7 @@ const initialFormState = {
   id: '', 
   name: '', 
   estimatedTime: 0,
+  realTime: 0,
   status: 'A', 
   projectId: ''
 };
@@ -79,6 +80,7 @@ const StagePage = () => {
       id: formData.id ? parseInt(formData.id, 10) : null,
       name: formData.name,
       estimatedTime: parseInt(formData.estimatedTime, 10),
+      realTime: parseInt(formData.realTime, 10),
       status: formData.status,
       projectId: parseInt(formData.projectId, 10),
     };
