@@ -23,9 +23,9 @@ const PositionTable = ({ records, handleSelectRecord, selectedRecordId, isLoadin
                 ${record.status === '*' ? 'bg-red-50 text-gray-500' : ''}
                 ${selectedRecordId === record.id ? 'bg-blue-200' : 'hover:bg-gray-50'}`}
             >
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{record.id}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{record.description}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">{record.id}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm">{record.description}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm">
                 {typeof record.costPerHour === 'number' ? `$${record.costPerHour.toFixed(2)}` : 'N/A'}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm">
