@@ -12,6 +12,9 @@ const ProjectTable = ({ records, handleSelectRecord, selectedRecordId, isLoading
             <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Cliente</th>
             <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Estado Proyecto</th>
             <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Fecha Inicio</th>
+            <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Fecha Fin</th>
+            <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Monto Estimado</th>
+            <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Monto Real</th>
             <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Estado Registro</th>
           </tr>
         </thead>
@@ -30,6 +33,9 @@ const ProjectTable = ({ records, handleSelectRecord, selectedRecordId, isLoading
               <td className="px-6 py-4 whitespace-nowrap text-sm">{record.clientName}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm">{record.projectStatusDescription}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm">{record.startDate}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm">{record.endDate}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm">{record.estimatedAmount}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm">{record.realAmount}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm">
                 <StatusBadge status={record.status} />
               </td>
