@@ -22,7 +22,10 @@ const TaskTable = ({ records, handleSelectRecord, selectedRecordId, isLoading })
             <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Código</th>
             <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Descripción</th>
             <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Actividad</th>
+            <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Tipo Tarea</th>
             <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Prioridad</th>
+            <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Tiempo Estimado</th>
+            <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Tiempo Real</th>
             <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Estado Tarea</th>
             <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Estado Registro</th>
           </tr>
@@ -40,7 +43,10 @@ const TaskTable = ({ records, handleSelectRecord, selectedRecordId, isLoading })
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">{record.id}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm">{record.description}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm">{record.activityName}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm">{record.taskTypeDescription}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm">{record.priorityDescription}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm">{record.estimatedTime} h</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm">{record.realTime} h</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm">{getTaskStatusBadge(record.taskStatus)}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm">
                 <StatusBadge status={record.status} />
@@ -48,7 +54,7 @@ const TaskTable = ({ records, handleSelectRecord, selectedRecordId, isLoading })
             </tr>
           ))}
           {!isLoading && records.length === 0 && (
-            <tr><td colSpan="6" className="text-center p-4 text-gray-500">No hay registros para mostrar.</td></tr>
+            <tr><td colSpan="10" className="text-center p-4 text-gray-500">No hay registros para mostrar.</td></tr>
           )}
         </tbody>
       </table>
