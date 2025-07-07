@@ -11,7 +11,7 @@ const CLIENT_TYPES_ENDPOINT = '/client-types';
 const initialFormState = { 
   id: '', 
   name: '', 
-  entryDate: '', 
+  registrationDate: '', 
   terminationDate: '', 
   clientStatus: 'A', 
   status: 'A', 
@@ -31,7 +31,7 @@ const ClientPage = () => {
     setIsLoading(true);
     try {
       const [clientsData, clientTypesData] = await Promise.all([
-        apiService.getAll(API_ENDPOINT),
+        apiService.getAll(`${API_ENDPOINT}?sort=id,asc`),
         apiService.getAll(CLIENT_TYPES_ENDPOINT),
       ]);
       setRecords(clientsData.content);
@@ -60,7 +60,7 @@ const ClientPage = () => {
     }
     const recordToEdit = {
         ...selectedRecord,
-        entryDate: selectedRecord.entryDate || '',
+        registrationDate: selectedRecord.registrationDate || '',
         terminationDate: selectedRecord.terminationDate || '',
     };
     setFormData(recordToEdit);
@@ -83,7 +83,7 @@ const ClientPage = () => {
     const requestData = {
       id: formData.id ? parseInt(formData.id, 10) : null,
       name: formData.name,
-      entryDate: formData.entryDate || null,
+      registrationDate: formData.registrationDate || null,
       terminationDate: formData.terminationDate || null,
       clientStatus: formData.clientStatus,
       status: formData.status,
@@ -119,7 +119,7 @@ const ClientPage = () => {
         const recordToDelete = { ...selectedRecord, status: '*' };
         await apiService.update(API_ENDPOINT, selectedRecord.id, {
             name: recordToDelete.name,
-            entryDate: recordToDelete.entryDate,
+            registrationDate: recordToDelete.registrationDate,
             terminationDate: recordToDelete.terminationDate,
             clientStatus: recordToDelete.clientStatus,
             status: recordToDelete.status,

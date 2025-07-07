@@ -7,7 +7,7 @@ import java.time.LocalDate;
 public class ClientResponse {
   private Integer id;
   private String name;
-  private LocalDate entryDate;
+  private LocalDate registrationDate;
   private LocalDate terminationDate;
   private String clientStatus;
   private String status;

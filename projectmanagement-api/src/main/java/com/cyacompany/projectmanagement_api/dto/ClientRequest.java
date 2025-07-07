@@ -18,7 +18,8 @@ public class ClientRequest {
   @Size(max = 100, message = "Name must be less than 100 characters")
   private String name;
 
-  private LocalDate entryDate;
+  @NotNull
+  private LocalDate registrationDate;
   
   private LocalDate terminationDate;
 

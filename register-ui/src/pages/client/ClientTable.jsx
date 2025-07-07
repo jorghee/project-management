@@ -12,6 +12,7 @@ const ClientTable = ({ records, handleSelectRecord, selectedRecordId, isLoading 
             <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Tipo Cliente</th>
             <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Estado Cliente</th>
             <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Fecha Ingreso</th>
+            <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Fecha Cese</th>
             <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Estado Registro</th>
           </tr>
         </thead>
@@ -31,7 +32,8 @@ const ClientTable = ({ records, handleSelectRecord, selectedRecordId, isLoading 
               <td className="px-6 py-4 whitespace-nowrap text-sm">
                 {record.clientStatus === 'A' ? 'Activo' : 'Cesado'}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm">{record.entryDate}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm">{record.registrationDate}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm">{record.terminationDate}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm">
                 <StatusBadge status={record.status} />
               </td>
