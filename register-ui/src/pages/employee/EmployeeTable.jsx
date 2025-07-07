@@ -24,10 +24,10 @@ const EmployeeTable = ({ records, handleSelectRecord, selectedRecordId, isLoadin
                 ${record.status === '*' ? 'bg-red-50 text-gray-500' : ''}
                 ${selectedRecordId === record.id ? 'bg-blue-200' : 'hover:bg-gray-50'}`}
             >
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{record.id}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{record.name}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{record.positionDescription}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{record.experienceLevelDescription}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">{record.id}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm">{record.name}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm">{record.positionDescription}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm">{record.experienceLevelDescription}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm">
                 <StatusBadge status={record.status} />
               </td>
