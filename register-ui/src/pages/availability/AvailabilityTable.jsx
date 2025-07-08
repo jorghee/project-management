@@ -21,7 +21,8 @@ const AvailabilityTable = ({ records, handleSelectRecord, selectedRecordId, isLo
             <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">ID Empleado</th>
             <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Nombre Empleado</th>
             <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Estado Disponibilidad</th>
-            <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Capacidad/Carga (h)</th>
+            <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Carga Semanal</th>
+            <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Carga Actual</th>
             <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Estado Registro</th>
           </tr>
         </thead>
@@ -38,7 +39,8 @@ const AvailabilityTable = ({ records, handleSelectRecord, selectedRecordId, isLo
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">{record.employeeId}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm">{record.employeeName}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm">{getAvailabilityStatusBadge(record.availabilityStatus)}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm">{`${record.currentLoad} / ${record.weeklyCapacity}`}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm">{record.weeklyCapacity} h</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm">{record.currentLoad} h</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm">
                 <StatusBadge status={record.status} />
               </td>

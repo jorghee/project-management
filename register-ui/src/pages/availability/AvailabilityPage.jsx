@@ -10,7 +10,7 @@ const EMPLOYEES_ENDPOINT = '/employees';
 
 const initialFormState = { 
   employeeId: '',
-  availabilityStatus: 'D', // D: Disponible, O: Ocupado, V: Vacaciones
+  availabilityStatus: 'D',
   weeklyCapacity: 40,
   currentLoad: 0,
   status: 'A'
@@ -88,7 +88,7 @@ const AvailabilityPage = () => {
 
     try {
       // En una relación 1-a-1 con PK=FK, PUT se usa tanto para crear como para actualizar.
-      await apiService.update(`${API_ENDPOINT}/${employeeId}`, null, requestData); // El segundo arg de update es el ID, pero aquí no es necesario en el cuerpo.
+      await apiService.update(API_ENDPOINT, employeeId, requestData);
       addNotification(`Disponibilidad para el empleado #${employeeId} guardada con éxito.`, 'success');
       
       handleClear();
@@ -140,7 +140,7 @@ const AvailabilityPage = () => {
         
         <div className="flex flex-wrap gap-3 mb-6">
           <button onClick={handleSave} disabled={isLoading} className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:bg-blue-400">
-            {isEditing ? 'Guardar Cambios' : 'Crear/Actualizar Disponibilidad'}
+            {isEditing ? 'Guardar Cambios' : 'Crear Disponibilidad'}
           </button>
           <button onClick={handleModify} disabled={!selectedRecord || isLoading} className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 disabled:bg-gray-100 disabled:text-gray-400">Modificar</button>
           <button onClick={handleDelete} disabled={!selectedRecord || isLoading} className="px-4 py-2 text-sm font-medium text-red-700 bg-red-100 rounded-md hover:bg-red-200 disabled:bg-gray-100 disabled:text-gray-400">Eliminar</button>
