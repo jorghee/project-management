@@ -10,7 +10,7 @@ const TaskExecutionTable = ({ records, handleSelectRecord, selectedRecordId, isL
             <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">ID Ejecución</th>
             <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">ID Asignación</th>
             <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Fecha</th>
-            <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Tiempo Trabajado</th>
+            <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Tiempo Real</th>
             <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Estado Registro</th>
           </tr>
         </thead>
@@ -27,7 +27,7 @@ const TaskExecutionTable = ({ records, handleSelectRecord, selectedRecordId, isL
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">{record.id}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm">{record.assignmentId}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm">{record.executionDate}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm">{`${record.hours}h ${record.minutes}m`}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm">{record.hours} h</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm">
                 <StatusBadge status={record.status} />
               </td>

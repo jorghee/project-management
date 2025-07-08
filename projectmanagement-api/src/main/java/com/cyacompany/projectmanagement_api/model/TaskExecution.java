@@ -26,9 +26,6 @@ public class TaskExecution {
   @Column(name = "EjeHor", nullable = false)
   private Integer hours;
 
-  @Column(name = "EjeMin", nullable = false)
-  private Integer minutes;
-
   @Column(name = "EjeEstReg", length = 1, nullable = false)
   private String status;
 }

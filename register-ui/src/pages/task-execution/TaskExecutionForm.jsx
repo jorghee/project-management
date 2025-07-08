@@ -27,20 +27,10 @@ const TaskExecutionForm = ({ formData, handleFormChange, handleSubmit, isLoading
         </div>
         
         <div>
-          <label htmlFor="hours" className="block text-sm font-medium text-gray-700">Horas</label>
+          <label htmlFor="hours" className="block text-sm font-medium text-gray-700">Tiempo real (h)</label>
           <input type="number" name="hours" value={formData.hours} onChange={handleFormChange} required min="0" max="12" className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm" />
         </div>
 
-        <div>
-          <label htmlFor="minutes" className="block text-sm font-medium text-gray-700">Minutos</label>
-          <select name="minutes" value={formData.minutes} onChange={handleFormChange} required className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm">
-            <option value="0">00</option>
-            <option value="15">15</option>
-            <option value="30">30</option>
-            <option value="45">45</option>
-          </select>
-        </div>
-        
         <div>
           <label htmlFor="status" className="block text-sm font-medium text-gray-700">Estado del Registro</label>
           <select name="status" value={formData.status} onChange={handleFormChange}

@@ -12,7 +12,6 @@ const initialFormState = {
   id: '', 
   executionDate: '',
   hours: 0,
-  minutes: 0,
   status: 'A', 
   assignmentId: ''
 };
@@ -83,7 +82,6 @@ const TaskExecutionPage = () => {
       id: formData.id ? parseInt(formData.id, 10) : null,
       executionDate: formData.executionDate,
       hours: parseInt(formData.hours, 10),
-      minutes: parseInt(formData.minutes, 10),
       status: formData.status,
       assignmentId: parseInt(formData.assignmentId, 10),
     };
