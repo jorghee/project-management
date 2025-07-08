@@ -77,7 +77,7 @@ public class AvailabilityController {
    */
   @DeleteMapping("/{employeeId}")
   public ResponseEntity<Void> delete(@PathVariable Integer employeeId) {
-    service.deleteById(employeeId);
+    service.delete(employeeId);
     return ResponseEntity.noContent().build();
   }
 }
