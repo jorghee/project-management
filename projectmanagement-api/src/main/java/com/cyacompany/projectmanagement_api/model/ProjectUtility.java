@@ -2,6 +2,7 @@ package com.cyacompany.projectmanagement_api.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.domain.Persistable;
 
 import java.math.BigDecimal;
 
@@ -11,11 +12,14 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProjectUtility {
+public class ProjectUtility implements Persistable<Integer> {
 
   @Id
   @Column(name = "UtiProCod")
   private Integer projectId;
+
+  @Transient
+  private boolean isNew = true;
 
   @OneToOne(fetch = FetchType.LAZY)
   @MapsId
@@ -37,4 +41,14 @@ public class ProjectUtility {
 
   @Column(name = "UtiEstReg", length = 1, nullable = false)
   private String status;
+
+  @Override
+  public Integer getId() { return this.projectId; }
+
+  @Override
+  public boolean isNew() { return this.isNew; }
+
+  @PostLoad
+  @PostPersist
+  void markNotNew() { this.isNew = false; }
 }

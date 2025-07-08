@@ -2,6 +2,7 @@ package com.cyacompany.projectmanagement_api.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.domain.Persistable;
 
 @Entity
 @Table(name = "G2C_DISPONIBILIDAD")
@@ -9,11 +10,14 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Availability {
+public class Availability implements Persistable<Integer> {
 
   @Id
   @Column(name = "DisEmpCod")
   private Integer employeeId;
+
+  @Transient
+  private boolean isNew = true;
 
   @OneToOne(fetch = FetchType.LAZY)
   @MapsId
@@ -31,4 +35,14 @@ public class Availability {
 
   @Column(name = "DisEstReg", length = 1, nullable = false)
   private String status;
+
+  @Override
+  public Integer getId() { return this.employeeId; }
+
+  @Override
+  public boolean isNew() { return this.isNew; }
+  
+  @PostLoad
+  @PostPersist
+  void markNotNew() { this.isNew = false; }
 }
