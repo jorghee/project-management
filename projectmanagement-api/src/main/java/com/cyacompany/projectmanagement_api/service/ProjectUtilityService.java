@@ -46,18 +46,23 @@ public class ProjectUtilityService {
     TimeFactor timeFactor = timeFactorRepository.findById(timeFactorId)
       .orElseThrow(() -> new ResourceNotFoundException("TimeFactor not found with id: " + timeFactorId));
     
-    ProjectUtility utility = utilityRepository.findById(projectId)
-      .orElse(new ProjectUtility());
-      
-    utility.setProjectId(project.getId());
-    utility.setProject(project);
-    utility.setTimeFactor(timeFactor);
-    utility.setExperienceFactor(utilityDetails.getExperienceFactor());
-    utility.setBasePercentage(utilityDetails.getBasePercentage());
-    utility.setFinalPercentage(utilityDetails.getFinalPercentage());
-    utility.setStatus(utilityDetails.getStatus());
+    return utilityRepository.findById(projectId)
+      .map(existingUtility -> {
+        existingUtility.setTimeFactor(timeFactor);
+        existingUtility.setExperienceFactor(utilityDetails.getExperienceFactor());
+        existingUtility.setBasePercentage(utilityDetails.getBasePercentage());
+        existingUtility.setFinalPercentage(utilityDetails.getFinalPercentage());
+        existingUtility.setStatus(utilityDetails.getStatus());
 
-    return utilityRepository.save(utility);
+        return utilityRepository.save(existingUtility);
+      })
+      .orElseGet(() -> {
+        utilityDetails.setProject(project);
+        utilityDetails.setProjectId(projectId);
+        utilityDetails.setTimeFactor(timeFactor);
+
+        return utilityRepository.save(utilityDetails);
+      });
   }
 
   @Transactional

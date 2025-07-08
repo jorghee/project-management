@@ -39,22 +39,25 @@ public class AvailabilityService {
     Employee employee = employeeRepository.findById(employeeId)
       .orElseThrow(() -> new ResourceNotFoundException("Employee not found with id: " + employeeId));
     
-    // El ID de Availability es el mismo que el de Employee
-    Availability availability = availabilityRepository.findById(employeeId)
-      .orElse(new Availability());
-    
-    availability.setEmployeeId(employee.getId());
-    availability.setEmployee(employee);
-    availability.setAvailabilityStatus(availabilityDetails.getAvailabilityStatus());
-    availability.setWeeklyCapacity(availabilityDetails.getWeeklyCapacity());
-    availability.setCurrentLoad(availabilityDetails.getCurrentLoad());
-    availability.setStatus(availabilityDetails.getStatus());
-    
-    return availabilityRepository.save(availability);
+    return availabilityRepository.findById(employeeId)
+      .map(existingAvailability -> {
+        existingAvailability.setAvailabilityStatus(availabilityDetails.getAvailabilityStatus());
+        existingAvailability.setWeeklyCapacity(availabilityDetails.getWeeklyCapacity());
+        existingAvailability.setCurrentLoad(availabilityDetails.getCurrentLoad());
+        existingAvailability.setStatus(availabilityDetails.getStatus());
+
+        return availabilityRepository.save(existingAvailability);
+      })
+      .orElseGet(() -> {
+        availabilityDetails.setEmployee(employee);
+        availabilityDetails.setEmployeeId(employeeId);
+
+        return availabilityRepository.save(availabilityDetails);
+      });
   }
 
   @Transactional
-  public void deleteById(Integer employeeId) {
+  public void delete(Integer employeeId) {
     if (!availabilityRepository.existsById(employeeId)) {
       throw new ResourceNotFoundException("Availability not found for employee id: " + employeeId);
     }
