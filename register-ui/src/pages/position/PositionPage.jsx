@@ -121,7 +121,7 @@ const PositionPage = () => {
 
         <div className="flex flex-wrap gap-3 mb-6">
           <button onClick={handleSave} disabled={isLoading} className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:bg-blue-400">
-            {isEditing ? 'Guardar Cambios' : 'Crear Registro'}
+            {isEditing ? 'Guardar Cambios' : 'Crear Cargo'}
           </button>
           <button onClick={handleModify} disabled={!selectedRecord || isLoading} className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 disabled:bg-gray-100 disabled:text-gray-400">
             Modificar

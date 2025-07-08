@@ -80,21 +80,19 @@ const ProjectUtilityPage = () => {
     setIsLoading(true);
 
     const requestData = {
+      timeFactorId: parseInt(formData.timeFactorId, 10),
       experienceFactor: parseFloat(formData.experienceFactor),
       basePercentage: parseFloat(formData.basePercentage),
       finalPercentage: parseFloat(formData.finalPercentage),
       status: formData.status,
     };
     
-    // El ID del proyecto y el factor de tiempo se usan para crear/actualizar
     const projectId = parseInt(formData.projectId, 10);
-    const timeFactorId = parseInt(formData.timeFactorId, 10);
 
     try {
       // Para una relación 1-a-1 con PK=FK, PUT se usa tanto para crear como para actualizar.
-      await apiService.update(`${API_ENDPOINT}/${projectId}`, timeFactorId, requestData);
+      await apiService.update(API_ENDPOINT, projectId, requestData);
       addNotification(`Utilidad para el proyecto #${projectId} guardada con éxito.`, 'success');
-      
       handleClear();
       await fetchData();
     } catch (error) {
@@ -145,7 +143,7 @@ const ProjectUtilityPage = () => {
         
         <div className="flex flex-wrap gap-3 mb-6">
           <button onClick={handleSave} disabled={isLoading} className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:bg-blue-400">
-            {isEditing ? 'Guardar Cambios' : 'Crear/Actualizar Utilidad'}
+            {isEditing ? 'Guardar Cambios' : 'Crear Utilidad'}
           </button>
           <button onClick={handleModify} disabled={!selectedRecord || isLoading} className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 disabled:bg-gray-100 disabled:text-gray-400">Modificar</button>
           <button onClick={handleDelete} disabled={!selectedRecord || isLoading} className="px-4 py-2 text-sm font-medium text-red-700 bg-red-100 rounded-md hover:bg-red-200 disabled:bg-gray-100 disabled:text-gray-400">Eliminar</button>

@@ -7,11 +7,11 @@ const ProjectUtilityTable = ({ records, handleSelectRecord, selectedRecordId, is
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
-            <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">ID Proyecto</th>
+            <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Proyecto</th>
             <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Factor Tiempo</th>
-            <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">% Base</th>
-            <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Factor Exp.</th>
-            <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">% Final</th>
+            <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Factor Experiencia</th>
+            <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Utilidad Estimada</th>
+            <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Utilidad real</th>
             <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Estado</th>
           </tr>
         </thead>
@@ -25,11 +25,11 @@ const ProjectUtilityTable = ({ records, handleSelectRecord, selectedRecordId, is
                 ${record.status === '*' ? 'bg-red-50 text-gray-500' : ''}
                 ${selectedRecordId === record.projectId ? 'bg-blue-200' : 'hover:bg-gray-50'}`}
             >
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">{record.projectId}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">{record.projectName}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm">{record.timeFactorDescription}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm">{record.basePercentage?.toFixed(2)}%</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm">{record.experienceFactor?.toFixed(2)}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm">{record.finalPercentage?.toFixed(2)}%</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm">{record.basePercentage?.toFixed(2)}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm">{record.finalPercentage?.toFixed(2)}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm">
                 <StatusBadge status={record.status} />
               </td>
