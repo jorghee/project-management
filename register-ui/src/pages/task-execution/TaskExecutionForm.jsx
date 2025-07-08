@@ -43,7 +43,9 @@ const TaskExecutionForm = ({ formData, handleFormChange, handleSubmit, isLoading
         
         <div>
           <label htmlFor="status" className="block text-sm font-medium text-gray-700">Estado del Registro</label>
-          <select name="status" value={formData.status} onChange={handleFormChange} className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm">
+          <select name="status" value={formData.status} onChange={handleFormChange}
+            disabled={!isEditing} className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 ${!isEditing ? 'bg-gray-200 cursor-not-allowed' : 'bg-white'}`}
+          >
             <option value="A">Activo</option>
             <option value="I">Inactivo</option>
             {isEditing && formData.status === '*' && <option value="*" disabled>Eliminado</option>}

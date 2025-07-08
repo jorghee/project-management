@@ -80,6 +80,7 @@ const TaskExecutionPage = () => {
     setIsLoading(true);
 
     const requestData = {
+      id: formData.id ? parseInt(formData.id, 10) : null,
       executionDate: formData.executionDate,
       hours: parseInt(formData.hours, 10),
       minutes: parseInt(formData.minutes, 10),
