@@ -4,52 +4,49 @@ DECLARE
   v_project_id INT;
   v_total_cost NUMERIC(9, 2);
 BEGIN
-  -- Determinar el ID del proyecto afectado por el cambio
-  -- Si es un INSERT o UPDATE, usamos los nuevos datos (NEW)
+  -- Determinar el ID del proyecto afectado (usando snake_case)
   IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
-    SELECT p."ProCod"
+    SELECT p.pro_cod
     INTO v_project_id
-    FROM "G1M_PROYECTO" p
-    JOIN "G1M_ETAPA" e ON p."ProCod" = e."EtaProCod"
-    JOIN "G1M_ACTIVIDAD" a ON e."EtaCod" = a."ActEtaCod"
-    JOIN "G3M_TAREA" t ON a."ActCod" = t."TarActCod"
-    JOIN "G2T_ASIGNACION_TAREA" at ON t."TarCod" = at."AsiTarCod"
-    WHERE at."AsiCod" = NEW."EjeAsiCod";
-  -- Si es un DELETE, usamos los datos antiguos (OLD)
+    FROM g1m_proyecto p
+    JOIN g1m_etapa e ON p.pro_cod = e.eta_pro_cod
+    JOIN g1m_actividad a ON e.eta_cod = a.act_eta_cod
+    JOIN g3m_tarea t ON a.act_cod = t.tar_act_cod
+    JOIN g2t_asignacion_tarea at ON t.tar_cod = at.asi_tar_cod
+    WHERE at.asi_cod = NEW.eje_asi_cod;
   ELSIF (TG_OP = 'DELETE') THEN
-      SELECT p."ProCod"
-      INTO v_project_id
-      FROM "G1M_PROYECTO" p
-      JOIN "G1M_ETAPA" e ON p."ProCod" = e."EtaProCod"
-      JOIN "G1M_ACTIVIDAD" a ON e."EtaCod" = a."ActEtaCod"
-      JOIN "G3M_TAREA" t ON a."ActCod" = t."TarActCod"
-      JOIN "G2T_ASIGNACION_TAREA" at ON t."TarCod" = at."AsiTarCod"
-      WHERE at."AsiCod" = OLD."EjeAsiCod";
+    SELECT p.pro_cod
+    INTO v_project_id
+    FROM g1m_proyecto p
+    JOIN g1m_etapa e ON p.pro_cod = e.eta_pro_cod
+    JOIN g1m_actividad a ON e.eta_cod = a.act_eta_cod
+    JOIN g3m_tarea t ON a.act_cod = t.tar_act_cod
+    JOIN g2t_asignacion_tarea at ON t.tar_cod = at.asi_tar_cod
+    WHERE at.asi_cod = OLD.eje_asi_cod;
   END IF;
 
-  -- Si se encontró un proyecto, recalcular su costo total
   IF v_project_id IS NOT NULL THEN
-    -- Calculamos la suma total de costos para ese proyecto
-    SELECT COALESCE(SUM(ej."EjeHor" * cr."CarCosHor"), 0)
+    -- Calcular la suma total de costos (usando snake_case)
+    SELECT COALESCE(SUM(ej.eje_hor * cr.car_cos_hor), 0)
     INTO v_total_cost
-    FROM "G2H_EJECUCION_TAREA" ej
-    JOIN "G2T_ASIGNACION_TAREA" at ON ej."EjeAsiCod" = at."AsiCod"
-    JOIN "G2M_EMPLEADO" em ON at."AsiEmpCod" = em."EmpCod"
-    JOIN "G2M_CARGO" cr ON em."EmpCarCod" = cr."CarCod"
-    JOIN "G3M_TAREA" t ON at."AsiTarCod" = t."TarCod"
-    JOIN "G1M_ACTIVIDAD" a ON t."TarActCod" = a."ActCod"
-    JOIN "G1M_ETAPA" e ON a."ActEtaCod" = e."EtaCod"
-    WHERE e."EtaProCod" = v_project_id;
+    FROM g2h_ejecucion_tarea ej
+    JOIN g2t_asignacion_tarea at ON ej.eje_asi_cod = at.asi_cod
+    JOIN g2m_empleado em ON at.asi_emp_cod = em.emp_cod
+    JOIN g2m_cargo cr ON em.emp_car_cod = cr.car_cod
+    JOIN g3m_tarea t ON at.asi_tar_cod = t.tar_cod
+    JOIN g1m_actividad a ON t.tar_act_cod = a.act_cod
+    JOIN g1m_etapa e ON a.act_eta_cod = e.eta_cod
+    WHERE e.eta_pro_cod = v_project_id;
     
-    -- Actualizamos el campo ProMonReal en la tabla G1M_PROYECTO
-    UPDATE "G1M_PROYECTO"
-    SET "ProMonReal" = v_total_cost
-    WHERE "ProCod" = v_project_id;
+    -- Actualizar el campo pro_mon_real (usando snake_case)
+    UPDATE g1m_proyecto
+    SET pro_mon_real = v_total_cost
+    WHERE pro_cod = v_project_id;
 
-    PERFORM calculate_project_utility(v_project_id);
+    -- Llamada a la función de utilidad (si ya está creada)
+    -- PERFORM calculate_project_utility(v_project_id);
   END IF;
 
-  -- El valor de retorno del trigger es ignorado para triggers AFTER
   RETURN NULL;
 END;
 $$ LANGUAGE plpgsql;
