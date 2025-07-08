@@ -45,6 +45,8 @@ BEGIN
     UPDATE "G1M_PROYECTO"
     SET "ProMonReal" = v_total_cost
     WHERE "ProCod" = v_project_id;
+
+    PERFORM calculate_project_utility(v_project_id);
   END IF;
 
   -- El valor de retorno del trigger es ignorado para triggers AFTER
