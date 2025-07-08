@@ -78,6 +78,7 @@ const TaskAssignmentPage = () => {
     setIsLoading(true);
 
     const requestData = {
+      id: formData.id ? parseInt(formData.id, 10) : null,
       status: formData.status,
       employeeId: parseInt(formData.employeeId, 10),
       taskId: parseInt(formData.taskId, 10),
