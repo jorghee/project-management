@@ -1,46 +1,47 @@
 CREATE OR REPLACE FUNCTION calculate_project_utility(p_project_id INT)
 RETURNS VOID AS $$
 DECLARE
-  v_monto_estimado NUMERIC;
-  v_duracion_estimada INT;
-  v_duracion_real INT;
-  v_costo_real NUMERIC;
-  v_factor_tiempo_val NUMERIC;
-  v_suma_factores_utilidad NUMERIC;
-  v_ingreso_ajustado NUMERIC;
-  v_utilidad_neta NUMERIC;
-  v_time_factor_id INT;
+  v_base_percentage NUMERIC(5, 2);
+  v_time_factor_value NUMERIC(4, 2);
+  v_complexity_sum NUMERIC(5, 2);
+  v_experience_factor NUMERIC(4, 2);
+  v_final_percentage NUMERIC(5, 2);
 BEGIN
-  SELECT pro_mon_est, pro_dur_est, pro_dur_real, pro_mon_real
-  INTO v_monto_estimado, v_duracion_estimada, v_duracion_real, v_costo_real
-  FROM g1m_proyecto
-  WHERE pro_cod = p_project_id;
+  -- 1. Obtener todos los componentes necesarios para el cálculo desde la base de datos.
+  -- Usamos COALESCE para manejar valores nulos y evitar errores.
+  
+  -- Obtener Porcentaje Base, Factor de Experiencia (ya calculado) y el valor del Factor de Tiempo
+  SELECT 
+    COALESCE(pu.uti_por_base, 0), 
+    COALESCE(pu.uti_fac_exp, 0),
+    COALESCE(tf.fac_tie_val, 0)
+  INTO 
+    v_base_percentage, 
+    v_experience_factor,
+    v_time_factor_value
+  FROM g3d_utilidad_proyecto pu
+  JOIN g4m_factor_tiempo tf ON pu.uti_fac_tie_cod = tf.fac_tie_cod
+  WHERE pu.uti_pro_cod = p_project_id;
 
-  IF v_duracion_real IS NULL OR v_duracion_estimada IS NULL THEN
-    v_time_factor_id := 2; 
-  ELSIF v_duracion_real < v_duracion_estimada THEN
-    v_time_factor_id := 1;
-  ELSIF v_duracion_real > v_duracion_estimada THEN
-    v_time_factor_id := 3;
-  ELSE
-    v_time_factor_id := 2;
+  -- Si no se encuentra una utilidad para el proyecto, salimos.
+  IF NOT FOUND THEN
+    RETURN;
   END IF;
 
-  SELECT fac_tie_val INTO v_factor_tiempo_val FROM g4m_factor_tiempo WHERE fac_tie_cod = v_time_factor_id;
-
-  SELECT COALESCE(SUM(fu.fac_uti_val), 0)
-  INTO v_suma_factores_utilidad
+  -- Obtener la suma de los Factores de Utilidad (Complejidad)
+  SELECT COALESCE(SUM(uf.fac_uti_val), 0)
+  INTO v_complexity_sum
   FROM g4d_complejidad c
-  JOIN g4m_factor_utilidad fu ON c.com_fac_uti_cod = fu.fac_uti_cod
+  JOIN g4m_factor_utilidad uf ON c.com_fac_uti_cod = uf.fac_uti_cod
   WHERE c.com_uti_pro_cod = p_project_id;
+  
+  -- 2. Aplicar la fórmula
+  v_final_percentage := v_base_percentage + v_time_factor_value + v_complexity_sum + v_experience_factor;
 
-  v_ingreso_ajustado := v_monto_estimado * v_factor_tiempo_val * (1 + v_suma_factores_utilidad);
-  v_utilidad_neta := v_ingreso_ajustado - v_costo_real;
+  -- 3. Actualizar el campo de porcentaje final en la tabla de utilidad.
+  UPDATE g3d_utilidad_proyecto
+  SET uti_por_fin = v_final_percentage
+  WHERE uti_pro_cod = p_project_id;
 
-  INSERT INTO g3d_utilidad_proyecto (uti_pro_cod, uti_fac_tie_cod, uti_por_fin, uti_est_reg, uti_fac_exp, uti_por_base)
-  VALUES (p_project_id, v_time_factor_id, v_utilidad_neta, 'A', 0, 0)
-  ON CONFLICT (uti_pro_cod) DO UPDATE
-  SET uti_fac_tie_cod = EXCLUDED.uti_fac_tie_cod,
-      uti_por_fin = EXCLUDED.uti_por_fin;
 END;
 $$ LANGUAGE plpgsql;
