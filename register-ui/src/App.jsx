@@ -31,28 +31,28 @@ function App() {
         <Route path="/" element={<HomePage />} />
 
          {/* G1: GESTIÓN DE PROYECTOS */}
-        <Route path="/clients" element={<ClientPage />} />
         <Route path="/projects" element={<ProjectPage />} />
         <Route path="/stages" element={<StagePage />} />
         <Route path="/activities" element={<ActivityPage />} />
+        <Route path="/clients" element={<ClientPage />} />
+        <Route path="/simple-catalogs/client-types" element={<SimpleCatalogManager title="Gestión de Tipos de Cliente" apiEndpoint="/client-types" />} />
+        <Route path="/simple-catalogs/project-status" element={<SimpleCatalogManager title="Gestión de Estados de Proyecto" apiEndpoint="/project-status" />} />
         
         {/* G2: RECURSOS HUMANOS */}
         <Route path="/employees" element={<EmployeePage />} />
         <Route path="/positions" element={<PositionPage />} />
         <Route path="/experience-levels" element={<ExperienceLevelPage />} />
         <Route path="/availabilities" element={<AvailabilityPage />} />
+        <Route path="/task-assignments" element={<TaskAssignmentPage />} />
+        <Route path="/task-executions" element={<TaskExecutionPage />} />
 
         {/* G3: GESTIÓN OPERATIVA */}
         <Route path="/tasks" element={<TaskPage />} />
-        <Route path="/task-assignments" element={<TaskAssignmentPage />} />
-        <Route path="/task-executions" element={<TaskExecutionPage />} />
-        <Route path="/project-utilities" element={<ProjectUtilityPage />} />
-        
-        {/* GZ/G4: CONFIGURACIÓN Y CATÁLOGOS */}
-        <Route path="/simple-catalogs/client-types" element={<SimpleCatalogManager title="Gestión de Tipos de Cliente" apiEndpoint="/client-types" />} />
-        <Route path="/simple-catalogs/project-status" element={<SimpleCatalogManager title="Gestión de Estados de Proyecto" apiEndpoint="/project-status" />} />
         <Route path="/simple-catalogs/task-types" element={<SimpleCatalogManager title="Gestión de Tipos de Tarea" apiEndpoint="/task-types" />} />
         <Route path="/simple-catalogs/priorities" element={<SimpleCatalogManager title="Gestión de Prioridades" apiEndpoint="/priorities" />} />
+        <Route path="/project-utilities" element={<ProjectUtilityPage />} />
+        
+        {/* G4: CÁLCULOS Y FACTORES */}
         <Route path="/time-factors" element={<TimeFactorPage />} />
         <Route path="/utility-factors" element={<UtilityFactorPage />} />
         <Route path="/complexities" element={<ComplexityPage />} />       
