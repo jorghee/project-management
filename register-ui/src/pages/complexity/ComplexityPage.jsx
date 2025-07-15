@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import apiService from '../../api/apiService';
 import { useNotifier } from '../../context/NotificationContext';
+import ComplexityShuttle from './ComplexityShuttle';
 import ComplexityTable from './ComplexityTable';
 
 const API_ENDPOINT = '/complexities';
@@ -9,29 +10,23 @@ const PROJECTS_ENDPOINT = '/projects';
 const UTILITY_FACTORS_ENDPOINT = '/utility-factors';
 
 const ComplexityPage = () => {
-  const [allComplexities, setAllComplexities] = useState([]);
-  const [filteredComplexities, setFilteredComplexities] = useState([]);
+  const [projectComplexities, setProjectComplexities] = useState([]);
   const [projects, setProjects] = useState([]);
-  const [utilityFactors, setUtilityFactors] = useState([]);
-  
+  const [allUtilityFactors, setAllUtilityFactors] = useState([]);
   const [selectedProjectId, setSelectedProjectId] = useState('');
-  const [selectedFactorId, setSelectedFactorId] = useState('');
-  
   const [isLoading, setIsLoading] = useState(false);
+
   const { addNotification } = useNotifier();
 
-  const fetchData = useCallback(async () => {
+  const fetchInitialData = useCallback(async () => {
     setIsLoading(true);
     try {
-      const [complexitiesData, projectsData, factorsData] = await Promise.all([
-        apiService.getAll(API_ENDPOINT),
+      const [projectsData, factorsData] = await Promise.all([
         apiService.getAll(PROJECTS_ENDPOINT),
         apiService.getAll(UTILITY_FACTORS_ENDPOINT),
       ]);
-      setAllComplexities(complexitiesData);
-      setFilteredComplexities(complexitiesData);
       setProjects(projectsData.content || projectsData);
-      setUtilityFactors(factorsData);
+      setAllUtilityFactors(factorsData);
     } catch (error) {
       addNotification(`Error al cargar datos: ${error.message}`, 'error');
     } finally {
@@ -40,77 +35,106 @@ const ComplexityPage = () => {
   }, [addNotification]);
 
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    fetchInitialData();
+  }, [fetchInitialData]);
+
+  // Carga las complejidades de un proyecto cuando se selecciona
+  const fetchComplexitiesForProject = useCallback(async (projectId) => {
+    if (!projectId) {
+      setProjectComplexities([]);
+      return;
+    }
+    setIsLoading(true);
+    try {
+      const data = await apiService.getAll(`${API_ENDPOINT}/by-project/${projectId}`);
+      setProjectComplexities(data);
+    } catch (error) {
+      addNotification(`Error al cargar factores para el proyecto: ${error.message}`, 'error');
+    } finally {
+      setIsLoading(false);
+    }
+  }, [addNotification]);
 
   useEffect(() => {
-    let results = [...allComplexities];
+    fetchComplexitiesForProject(selectedProjectId);
+  }, [selectedProjectId]);
 
-    if (selectedProjectId) {
-      results = results.filter(c => c.projectUtilityId === parseInt(selectedProjectId, 10));
+
+  // Lógica para asignar un factor
+  const handleAssignFactor = async (factorId) => {
+    setIsLoading(true);
+    try {
+      await apiService.create(`${API_ENDPOINT}/${selectedProjectId}/${factorId}`, {});
+      addNotification('Factor asignado con éxito.', 'success');
+      fetchComplexitiesForProject(selectedProjectId); // Recargar la lista de asignados
+    } catch (error) {
+      addNotification(`Error al asignar factor: ${error.message}`, 'error');
+    } finally {
+      setIsLoading(false);
     }
-
-    if (selectedFactorId) {
-      results = results.filter(c => c.utilityFactorId === parseInt(selectedFactorId, 10));
-    }
-    
-    setFilteredComplexities(results);
-  }, [selectedProjectId, selectedFactorId, allComplexities]);
-
-
-  const handleResetFilters = () => {
-    setSelectedProjectId('');
-    setSelectedFactorId('');
   };
 
+  // Lógica para remover un factor
+  const handleRemoveFactor = async (factorId) => {
+    setIsLoading(true);
+    try {
+      const fullPath = `${API_ENDPOINT}/${selectedProjectId}/${factorId}`;
+      await apiService.removeByPath(fullPath);
+      addNotification('Factor removido con éxito.', 'success');
+      fetchComplexitiesForProject(selectedProjectId); // Recargar la lista de asignados
+    } catch (error) {
+      addNotification(`Error al remover factor: ${error.message}`, 'error');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const assignedFactorIds = new Set(projectComplexities.map(c => c.utilityFactorId));
+  const assignedFactors = allUtilityFactors.filter(f => assignedFactorIds.has(f.id));
+  const availableFactors = allUtilityFactors.filter(f => !assignedFactorIds.has(f.id));
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
       <div className="max-w-7xl mx-auto bg-white p-8 rounded-lg shadow-lg">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold text-gray-800">Visualización de Complejidad de Proyectos</h1>
+          <h1 className="text-3xl font-bold text-gray-800">Gestión de Complejidad de Proyectos</h1>
           <Link to="/" className="px-4 py-2 text-sm font-medium text-white bg-gray-600 rounded-md hover:bg-gray-700">← Volver al Menú</Link>
         </div>
 
-        {/* Sección de Filtros */}
-        <div className="mb-6 p-4 border rounded-md bg-gray-50 flex flex-wrap items-end gap-4">
-          <div className="flex-1 min-w-[200px]">
-            <label htmlFor="projectFilter" className="block text-sm font-medium text-gray-700">Filtrar por Proyecto</label>
-            <select
-              id="projectFilter"
-              value={selectedProjectId}
-              onChange={(e) => setSelectedProjectId(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm"
-            >
-              <option value="">Todos los Proyectos</option>
-              {projects.map(p => (
-                <option key={p.id} value={p.id}>{p.name}</option>
-              ))}
-            </select>
-          </div>
-          <div className="flex-1 min-w-[200px]">
-            <label htmlFor="factorFilter" className="block text-sm font-medium text-gray-700">Filtrar por Factor de Utilidad</label>
-            <select
-              id="factorFilter"
-              value={selectedFactorId}
-              onChange={(e) => setSelectedFactorId(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm"
-            >
-              <option value="">Todos los Factores</option>
-              {utilityFactors.map(f => (
-                <option key={f.id} value={f.id}>{f.description}</option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <button onClick={handleResetFilters} className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
-              Limpiar Filtros
-            </button>
-          </div>
+        {/* Sección de Selección de Proyecto */}
+        <div className="mb-6 p-4 border rounded-md bg-gray-50">
+          <label htmlFor="projectSelector" className="block text-sm font-medium text-gray-700 mb-2">
+            Seleccione un Proyecto para gestionar sus Factores de Complejidad
+          </label>
+          <select
+            id="projectSelector"
+            value={selectedProjectId}
+            onChange={(e) => setSelectedProjectId(e.target.value)}
+            className="block w-full max-w-md px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm"
+          >
+            <option value="">-- Seleccionar Proyecto --</option>
+            {projects.map(p => (
+              <option key={p.id} value={p.id}>{p.name}</option>
+            ))}
+          </select>
         </div>
 
+        {/* Interfaz de Shuttle (solo se muestra si se selecciona un proyecto) */}
+        {selectedProjectId && (
+          <div className="mb-8">
+            <ComplexityShuttle
+              availableFactors={availableFactors}
+              assignedFactors={assignedFactors}
+              onAssign={handleAssignFactor}
+              onRemove={handleRemoveFactor}
+            />
+          </div>
+        )}
+
+        {/* Tabla de Resumen (opcional, muestra las relaciones del proyecto seleccionado) */}
+        <h2 className="text-xl font-semibold text-gray-700 mb-4">Resumen de Factores Asignados</h2>
         <ComplexityTable
-          records={filteredComplexities}
+          records={projectComplexities}
           isLoading={isLoading}
         />
       </div>

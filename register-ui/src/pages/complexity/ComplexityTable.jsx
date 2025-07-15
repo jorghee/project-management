@@ -9,7 +9,7 @@ const ComplexityTable = ({ records, isLoading }) => {
           <tr>
             <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Proyecto</th>
             <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Factor de Utilidad Aplicado</th>
-            <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Estado del Vínculo</th>
+            <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Estado de registro</th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
@@ -19,13 +19,9 @@ const ComplexityTable = ({ records, isLoading }) => {
             <tr key={`${record.projectUtilityId}-${record.utilityFactorId}-${index}`}
                 className={`${record.status === '*' ? 'bg-red-50 text-gray-500' : ''}`}
             >
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                <span className="font-bold text-gray-900">{`#${record.projectUtilityId}`}</span> {record.projectName}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{record.utilityFactorDescription}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm">
-                <StatusBadge status={record.status} />
-              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm">{record.projectName}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm">{record.utilityFactorDescription}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm"><StatusBadge status={record.status} /></td>
             </tr>
           ))}
           {!isLoading && records.length === 0 && (
