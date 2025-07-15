@@ -10,6 +10,7 @@ public interface ComplexityMapper {
 
   // Mapea la entidad a un DTO de respuesta legible
   @Mapping(source = "projectUtility.projectId", target = "projectUtilityId")
+  @Mapping(source = "projectUtility.project.name", target = "projectName") 
   @Mapping(source = "utilityFactor.id", target = "utilityFactorId")
   @Mapping(source = "utilityFactor.description", target = "utilityFactorDescription")
   ComplexityResponse toResponse(Complexity complexity);
