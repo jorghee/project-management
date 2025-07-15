@@ -1,5 +1,6 @@
 package com.cyacompany.projectmanagement_api.service;
 
+import com.cyacompany.projectmanagement_api.exception.BusinessLogicException;
 import com.cyacompany.projectmanagement_api.exception.ResourceNotFoundException;
 import com.cyacompany.projectmanagement_api.model.Complexity;
 import com.cyacompany.projectmanagement_api.model.ComplexityId;
@@ -16,9 +17,16 @@ import java.util.List;
 public class ComplexityService {
 
   private final ComplexityRepository complexityRepository;
+  private final ProjectUtilityRepository projectUtilityRepository;
+  private final UtilityFactorRepository utilityFactorRepository;
 
-  public ComplexityService(ComplexityRepository complexityRepository) {
+  public ComplexityService(
+      ComplexityRepository complexityRepository, 
+      ProjectUtilityRepository projectUtilityRepository, 
+      UtilityFactorRepository utilityFactorRepository) {
     this.complexityRepository = complexityRepository;
+    this.projectUtilityRepository = projectUtilityRepository;
+    this.utilityFactorRepository = utilityFactorRepository;
   }
 
   /**
@@ -58,5 +66,40 @@ public class ComplexityService {
    */
   public List<Complexity> getByFactorId(Integer factorId) {
     return complexityRepository.findByUtilityFactor_Id(factorId);
+  }
+
+  /**
+   * Crea una nueva relación de complejidad.
+   * Valida que ambas entidades padre existan y que la relación no exista previamente.
+   */
+  @Transactional
+  public Complexity create(Complexity complexityDetails, Integer projectUtilityId, Integer utilityFactorId) {
+    ComplexityId id = new ComplexityId(projectUtilityId, utilityFactorId);
+    if (complexityRepository.existsById(id)) {
+      throw new BusinessLogicException("This complexity factor is already assigned to the project.");
+    }
+
+    ProjectUtility projectUtility = projectUtilityRepository.findById(projectUtilityId)
+      .orElseThrow(() -> new ResourceNotFoundException("ProjectUtility not found with id: " + projectUtilityId));
+    UtilityFactor utilityFactor = utilityFactorRepository.findById(utilityFactorId)
+      .orElseThrow(() -> new ResourceNotFoundException("UtilityFactor not found with id: " + utilityFactorId));
+
+    complexityDetails.setProjectUtility(projectUtility);
+    complexityDetails.setUtilityFactor(utilityFactor);
+    
+    return complexityRepository.save(complexityDetails);
+  }
+
+  /**
+   * Elimina una relación de complejidad por su clave compuesta.
+   */
+  @Transactional
+  public void delete(Integer projectUtilityId, Integer utilityFactorId) {
+    ComplexityId id = new ComplexityId(projectUtilityId, utilityFactorId);
+    if (!complexityRepository.existsById(id)) {
+      throw new ResourceNotFoundException("Complexity not found for ProjectUtility ID: " +
+          projectUtilityId + " and UtilityFactor ID: " + utilityFactorId);
+    }
+    complexityRepository.deleteById(id);
   }
 }
