@@ -76,6 +76,17 @@ const catalogService = {
       method: 'DELETE',
     }).then(handleResponse);
   },
+
+  /**
+   * Elimina un recurso usando una ruta completa.
+   * Ideal para claves compuestas o endpoints de eliminación personalizados.
+   * @param {string} fullPath - La ruta completa del endpoint (ej. '/complexities/1/1').
+   */
+  removeByPath: (fullPath) => {
+    return fetch(`${API_BASE_URL}${fullPath}`, {
+      method: 'DELETE',
+    }).then(handleResponse);
+  }
 };
 
 export default catalogService;
