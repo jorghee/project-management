@@ -155,7 +155,7 @@ INSERT INTO `g3m_tarea` (`tar_cod`, `tar_act_cod`, `tar_tip_tar_cod`, `tar_pri_c
 
 -- INSERT INTO `g2t_asignacion_tarea` (`AsiCod`, `AsiEmpCod`, `AsiTarCod`, `AsiEstReg`) VALUES
 -- (701, 502, 601, 'A'),
--- (702, 503, 601, 'A');
+-- (702, 504, 602, 'A');
 
 
 -- >> TRIGGER 2. Registro de Horas <<
